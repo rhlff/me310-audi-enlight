@@ -21,6 +21,10 @@ class LocatedLEDObject(LEDObject):
         super(LocatedLEDObject, self).__init__(color, intensity)
         self.location = location
 
+class LEDAll(UnlocatedLEDObject):
+    def pixel_color(self, led_location, t):
+        return self.color
+
 class LEDSpot(LocatedLEDObject):
     def __init__(self, color, intensity, location, radius):
         super(LEDSpot, self).__init__(color, intensity, location)
