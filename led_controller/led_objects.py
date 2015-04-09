@@ -1,5 +1,8 @@
 import abc
+import math
 from datetime import datetime
+
+from led_controller.led_helper import apply_brightness
 
 class LEDObject:
     __metaclass__ = abc.ABCMeta
@@ -30,3 +33,14 @@ class LEDSpot(LocatedLEDObject):
         super(LEDSpot, self).__init__(color, intensity, location)
         self.radius = radius
 
+    def pixel_color(self, led_location, t):
+        pixel_angle = led_location.angle - self.location.angle
+        distance_x = pixel_angle * math.pi / 180 * self.location.distance
+        distance_y = led_location.z * self.location.distance / led_location.distance
+        distance = math.sqrt(distance_x*distance_x + distance_y*distance_y)
+
+        if distance > self.radius:
+            return None
+
+        brightness_factor = 1 - distance/self.radius
+        return apply_brightness(brightness_factor, *self.color)
