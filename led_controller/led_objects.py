@@ -2,7 +2,7 @@ import abc
 import math
 from datetime import datetime
 
-from led_controller.led_helper import apply_brightness
+from led_controller.led_helper import apply_brightness, project_to_led
 
 class LEDObject:
     __metaclass__ = abc.ABCMeta
@@ -13,7 +13,7 @@ class LEDObject:
         self.creation_time = datetime.now()
 
     @abc.abstractmethod
-    def pixel_color(self, led_location, time):
+    def pixel_color(self, led_location, t):
         pass
 
 class UnlocatedLEDObject(LEDObject):
@@ -34,10 +34,8 @@ class LEDSpot(LocatedLEDObject):
         self.radius = radius
 
     def pixel_color(self, led_location, t):
-        pixel_angle = led_location.angle - self.location.angle
-        distance_x = pixel_angle * math.pi / 180 * self.location.distance
-        distance_y = led_location.z * self.location.distance / led_location.distance
-        distance = math.sqrt(distance_x*distance_x + distance_y*distance_y)
+        offset_x, offset_y = project_to_led(led_location, self.location)
+        distance = math.sqrt(offset_x*offset_x + offset_y*offset_y)
 
         if distance > self.radius:
             return None
