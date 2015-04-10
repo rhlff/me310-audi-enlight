@@ -16,7 +16,7 @@ if __name__ == '__main__':
     # builder.add_led_circle(120, 60, 0.5, 100.0/60 *  1 * 0.01)
     world = builder.build()
 
-    # led_all = LEDAll((255, 0, 0), 1)
+    led_all = LEDAll((255, 0, 0), 1)
 
     color = (150, 0, 0)
     location = ObjectLocation(0, 0.5)
@@ -25,7 +25,11 @@ if __name__ == '__main__':
     now = datetime.now()
     led_wave = LEDWave(color, 0, 1, 15)
 
-    pixels = world.draw([led_wave], now)
+    location = ObjectLocation(0, 0.5)
+    color = (52, 141, 151)
+    led_drop = LEDDrop(color, 0, location, 200.0/60 * 0.01 * 5, 0.05)
+
+    pixels = world.draw([led_drop], now)
 
     client.put_pixels(pixels)
     client.put_pixels(pixels)
@@ -34,16 +38,24 @@ if __name__ == '__main__':
     # while True:
     #     led_spot.location.angle += angle_inc
 
-    #     if led_spot.location.angle > 45 or led_spot.location.angle < -45:
-    #         angle_inc *= -1
+    #     # if led_spot.location.angle > 45 or led_spot.location.angle < -45:
+    #     #     angle_inc *= -1
 
     #     pixels = world.draw([led_spot], 0)
     #     client.put_pixels(pixels)
     #     time.sleep(0.02)
 
-    while True:
+    # while True:
+    #     now = datetime.now()
+    #     pixels = world.draw([led_wave], now)
+    #     client.put_pixels(pixels)
+    #     time.sleep(0.02)
+
+    symbols = [led_drop]
+    while symbols:
         now = datetime.now()
-        pixels = world.draw([led_wave], now)
+        pixels = world.draw([led_drop], now)
         client.put_pixels(pixels)
+        symbols = [s for s in symbols if not s.dead]
         time.sleep(0.02)
 
