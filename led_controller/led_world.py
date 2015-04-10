@@ -48,7 +48,7 @@ class LEDWorldBuilder(object):
 
 class ObjectLocation(object):
     def __init__(self, angle, distance):
-        self.angle = angle
+        self.angle = angle % 360
         self.distance = distance
 
 class LEDLocation(ObjectLocation):
