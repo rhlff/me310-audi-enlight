@@ -28,6 +28,23 @@ class LEDAll(UnlocatedLEDObject):
     def pixel_color(self, led_location, t):
         return self.color
 
+class LEDWave(UnlocatedLEDObject):
+    def __init__(self, color, intensity, speed, period, amplitude=0.3, vertical_shift=0.7):
+        self.wave_function = self.build_wave_function(period, amplitude, vertical_shift)
+        self.speed = speed
+        super(LEDWave, self).__init__(color, intensity)
+
+    def build_wave_function(self, period, amplitude, vertical_shift):
+        def wave_function(angle, phase_shift):
+            return amplitude * math.cos(period*(math.radians(angle)-phase_shift*math.pi/period)) + vertical_shift
+        return wave_function
+
+    def pixel_color(self, led_location, t):
+        time_delta = t - self.creation_time
+        time_diff = 0 if self.speed == 0 else time_delta.total_seconds() / self.speed
+        brightness_factor = self.wave_function(led_location.angle, time_diff)
+        return apply_brightness(brightness_factor, *self.color)
+
 class LEDSpot(LocatedLEDObject):
     def __init__(self, color, intensity, location, radius):
         super(LEDSpot, self).__init__(color, intensity, location)
