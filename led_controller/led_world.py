@@ -1,4 +1,5 @@
 import math
+from led_controller.led_helper import angle_and_distance_for_point
 
 class LEDWorld(object):
     def __init__(self, led_count, led_locations):
@@ -35,8 +36,7 @@ class LEDWorldBuilder(object):
         spacing_y = (end_y - start_y) * 1.0 / led_count
         for i in xrange(led_count):
             current_x, current_y = start_x+i*spacing_x, start_y+i*spacing_y
-            distance = math.sqrt(current_x*current_x + current_y*current_y)
-            angle = math.degrees( math.acos(current_x / distance) ) - 90
+            angle, distance = angle_and_distance_for_point(current_x, current_y)
             self.led_locations[opc_start_index+i] = LEDLocation(angle, distance, z, opc_start_index+i)
         return self
 
