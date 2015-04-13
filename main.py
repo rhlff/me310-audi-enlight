@@ -26,16 +26,13 @@ def all_leds_off():
 
 def show_spot():
     builder = LEDWorldBuilder()
-    builder.add_led_strip(0,   60, -0.5, 0.5, 0.5, 0.5, 100.0/60 * -1 * 0.01)
-    builder.add_led_strip(60,  60, -0.5, 0.5, 0.5, 0.5, 100.0/60 *  0 * 0.01)
-    builder.add_led_strip(120, 60, -0.5, 0.5, 0.5, 0.5, 100.0/60 *  1 * 0.01)
-    # builder.add_led_circle(0,   60, 0.5, 100.0/60 * -1 * 0.01)
-    # builder.add_led_circle(60,  60, 0.5, 100.0/60 *  0 * 0.01)
-    # builder.add_led_circle(120, 60, 0.5, 100.0/60 *  1 * 0.01)
+    builder.add_led_strip(0,   60, -0.5, 0.5, 0.5, 0.5, 1.0/60 * -1)
+    builder.add_led_strip(60,  60, -0.5, 0.5, 0.5, 0.5, 1.0/60 *  0)
+    builder.add_led_strip(120, 60, -0.5, 0.5, 0.5, 0.5, 1.0/60 *  1)
     world = builder.build()
     color = (150, 0, 0)
-    location = ObjectLocation(0, 0.5)
-    led_spot = LEDSpot(color, 0, location, 200.0/60 * 0.01 * 5)
+    location = ObjectLocation(0, 1.414213562)
+    led_spot = LEDSpot(color, 0, location, 1.0/60 * 20)
 
     angle_inc = 1
     while True:
@@ -48,9 +45,9 @@ def show_spot():
 
 def show_wave():
     builder = LEDWorldBuilder()
-    builder.add_led_circle(0,   60, 0.5, 100.0/60 * -1 * 0.01)
-    builder.add_led_circle(60,  60, 0.5, 100.0/60 *  0 * 0.01)
-    builder.add_led_circle(120, 60, 0.5, 100.0/60 *  1 * 0.01)
+    builder.add_led_circle(0,   60, 0.5, 1.0/60 * -1)
+    builder.add_led_circle(60,  60, 0.5, 1.0/60 *  0)
+    builder.add_led_circle(120, 60, 0.5, 1.0/60 *  1)
     world = builder.build()
     color = (150, 0, 0)
     led_wave = LEDWave(color, 0, 1, 15)
@@ -63,13 +60,13 @@ def show_wave():
 
 def show_drop():
     builder = LEDWorldBuilder()
-    builder.add_led_strip(0,   60, -0.5, 0.5, 0.5, 0.5, 100.0/60 * -1 * 0.01)
-    builder.add_led_strip(60,  60, -0.5, 0.5, 0.5, 0.5, 100.0/60 *  0 * 0.01)
-    builder.add_led_strip(120, 60, -0.5, 0.5, 0.5, 0.5, 100.0/60 *  1 * 0.01)
+    builder.add_led_strip(0,   60, -0.5, 0.5, 0.5, 0.5, 1.0/60 * -1)
+    builder.add_led_strip(60,  60, -0.5, 0.5, 0.5, 0.5, 1.0/60 *  0)
+    builder.add_led_strip(120, 60, -0.5, 0.5, 0.5, 0.5, 1.0/60 *  1)
     world = builder.build()
     location = ObjectLocation(0, 0.5)
     color = (52, 141, 151)
-    led_drop = LEDDrop(color, 0, location, 200.0/60 * 0.01 * 5, 0.05)
+    led_drop = LEDDrop(color, 0, location, 1.0/60 * 10, 0.05)
     symbols = [led_drop]
     while symbols:
         now = datetime.now()
