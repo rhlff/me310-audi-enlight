@@ -77,6 +77,24 @@ def show_drop():
         symbols = [s for s in symbols if not s.dead]
         time.sleep(0.02)
 
+def show_continuous_drop():
+    builder = LEDWorldBuilder()
+    builder.add_led_strip(0,   60, -0.5, 0.5, 0.5, 0.5, 1.0/60 * -1)
+    builder.add_led_strip(60,  60, -0.5, 0.5, 0.5, 0.5, 1.0/60 *  0)
+    builder.add_led_strip(120, 60, -0.5, 0.5, 0.5, 0.5, 1.0/60 *  1)
+    world = builder.build()
+    location = ObjectLocation(0, 0.5)
+    color = (52, 141, 151)
+    led_drop = LECContinuousDrop(color, 0, location, 1.0/60 * 10, 1.0)
+    symbols = [led_drop]
+    while symbols:
+        now = datetime.now()
+        pixels = world.draw(symbols, now)
+        client.put_pixels(pixels)
+        client.put_pixels(pixels)
+        symbols = [s for s in symbols if not s.dead]
+        time.sleep(0.02)
+
 def show_pulsing():
     builder = LEDWorldBuilder()
     builder.add_led_strip(0,   60, -0.5, 0.5, 0.5, 0.5, 1.0/60 * -1)
@@ -95,7 +113,7 @@ def show_pulsing():
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Interior LED art for ME310 Audi')
-    parser.add_argument('pattern', choices=['off', 'all', 'spot', 'wave', 'drop', 'puls'])
+    parser.add_argument('pattern', choices=['off', 'all', 'spot', 'wave', 'drop', 'conDrop', 'puls'])
     args = parser.parse_args()
 
     {
@@ -104,5 +122,6 @@ if __name__ == '__main__':
         'spot': show_spot,
         'wave': show_wave,
         'drop': show_drop,
+        'conDrop': show_continuous_drop,
         'puls': show_pulsing,
     }[args.pattern]()
