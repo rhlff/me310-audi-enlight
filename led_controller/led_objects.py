@@ -89,3 +89,19 @@ class LEDDrop(LocatedLEDObject):
             self.dead = True
         color = apply_brightness(brightness_factor, *self.color)
         return (max(0, min(255, color[0])), max(0, min(255, color[1])), max(0, min(255, color[2])))
+
+class LEDAllPulsing(UnlocatedLEDObject):
+    def __init__(self, color, intensity, speed):
+        super(LEDAllPulsing, self).__init__(color, intensity)
+        self.speed = speed
+
+    def pixel_color(self, led_location, t):
+        heigth = 0.3
+        amplitude = heigth/2
+        vertical_shift = 1-amplitude
+
+        time_delta = t - self.creation_time
+        time_diff = 0 if self.speed == 0 else time_delta.total_seconds() / self.speed
+
+        brightness_factor = amplitude*math.sin(time_diff)+vertical_shift
+        return apply_brightness(brightness_factor, *self.color)
