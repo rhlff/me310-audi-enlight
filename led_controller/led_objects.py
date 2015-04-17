@@ -59,7 +59,8 @@ class LEDSpot(LocatedLEDObject):
             return None
 
         brightness_factor = 1 - distance/self.radius
-        return apply_brightness(brightness_factor, *self.color)
+        color = apply_brightness(brightness_factor, *self.color)
+        return (max(0, min(255, color[0])), max(0, min(255, color[1])), max(0, min(255, color[2])))
 
 class LEDDrop(LocatedLEDObject):
     def __init__(self, color, intensity, location, initial_radius, speed):
@@ -86,4 +87,5 @@ class LEDDrop(LocatedLEDObject):
             brightness_factor -= 1 - distance/inner_spacing
         if brightness_factor_time < 0.2:
             self.dead = True
-        return apply_brightness(brightness_factor, *self.color)
+        color = apply_brightness(brightness_factor, *self.color)
+        return (max(0, min(255, color[0])), max(0, min(255, color[1])), max(0, min(255, color[2])))

@@ -6,7 +6,9 @@ import time
 from datetime import datetime
 import argparse
 
-client = opc.Client('172.16.20.233:7890')
+FC_SERVER = '172.16.20.233:7890'
+# FC_SERVER = '192.168.2.1:7890'
+client = opc.Client(FC_SERVER)
 
 def all_leds_on():
     builder = LEDWorldBuilder().add_led_circle(0, 180, 1, 0)
@@ -30,7 +32,7 @@ def show_spot():
     builder.add_led_strip(60,  60, -0.5, 0.5, 0.5, 0.5, 1.0/60 *  0)
     builder.add_led_strip(120, 60, -0.5, 0.5, 0.5, 0.5, 1.0/60 *  1)
     world = builder.build()
-    color = (150, 0, 0)
+    color = (255, 0, 0)
     location = ObjectLocation(0, 1.414213562)
     led_spot = LEDSpot(color, 0, location, 1.0/60 * 20)
 

@@ -14,11 +14,10 @@ class LEDWorld(object):
         return rgb_values
 
     def _rgb_for_led(self, led_location, detected_objects, t):
-        # detected_objects should be sorted by distance
-        for led_obj in detected_objects:
-            rgb = led_obj.pixel_color(led_location, t)
-            if rgb:
-                return rgb
+        colors = [l for l in [led_obj.pixel_color(led_location, t) for led_obj in detected_objects] if l]
+        if colors:
+            color = reduce( (lambda a, b: (a[0]+b[0], a[1]+b[1], a[2]+b[2],)), colors)
+            return (min(color[0], 255), min(color[1], 255), min(color[2], 255), )
         return (0, 0, 0) # default: return black
 
 class LEDWorldBuilder(object):
