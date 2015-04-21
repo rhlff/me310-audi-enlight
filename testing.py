@@ -125,7 +125,7 @@ class TestingMode5(BaseTestingMode):
     def create(self):
         color = (128, 255, 128)
         location = ObjectLocation(START_ANGLE, 1.414213562)
-        self.spot = LECContinuousDrop(color, 0, location, 1.0/60 * 10 * 2.0, 1.0, 0.25, 0.01)
+        self.spot = LEDContinuousDrop(color, 0, location, 1.0/60 * 10 * 2.0, 1.0, 0.25, 0.05)
         self.symbols.append(self.spot)
 
 

@@ -85,7 +85,7 @@ def show_continuous_drop():
     world = builder.build()
     location = ObjectLocation(0, 0.5)
     color = (52, 141, 151)
-    led_drop = LECContinuousDrop(color, 0, location, 1.0/60 * 10, 1.0)
+    led_drop = LEDContinuousDrop(color, 0, location, 1.0/60 * 10, 1.0)
     symbols = [led_drop]
     while symbols:
         now = datetime.now()

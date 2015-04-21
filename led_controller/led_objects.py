@@ -105,3 +105,30 @@ class LEDAllPulsing(UnlocatedLEDObject):
 
         brightness_factor = amplitude*math.sin(time_diff)+vertical_shift
         return apply_brightness(brightness_factor, *self.color)
+
+class LEDContinuousDrop(LocatedLEDObject):
+    def __init__(self, color, intensity, location, interval, speed, period=0.5, decrease=0.025, end_after=None):
+        super(LEDContinuousDrop, self).__init__(color, intensity, location)
+        self.interval = interval
+        self.speed = speed
+        self.period = period
+        self.decrease = decrease
+        self.end_after = end_after
+
+    def pixel_color(self, led_location, t):
+        offset_x, offset_y = project_to_led(led_location, self.location)
+        distance = math.sqrt(offset_x*offset_x + offset_y*offset_y)
+        distance *= 100
+
+        time_delta = t - self.creation_time
+        time_diff = 0 if self.speed == 0 else time_delta.total_seconds() / self.speed * 2
+
+        decrease_factor = max(0 , 1-self.decrease*distance)
+        if self.period*distance/math.pi > time_diff+0.5:
+            return None
+        if self.end_after:
+            if self.period*distance/math.pi < time_diff-self.end_after*2+0.5:
+                return None
+
+        brightness_factor = 0.5*(math.cos(self.period*distance+(-1.0*time_diff-1.5)*math.pi)*decrease_factor+decrease_factor)
+        return apply_brightness(brightness_factor*1.5, *self.color)
