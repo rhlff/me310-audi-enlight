@@ -170,13 +170,13 @@ def main():
                 break  # Exit
             elif c == curses.KEY_LEFT:
                 mode.move(1.5)
-                stdscr.addstr(0, 0, "Mode 1       LEFT")
+                stdscr.addstr(0, 6, "       LEFT")
             elif c == curses.KEY_RIGHT:
                 mode.move(-1.5)
-                stdscr.addstr(0, 0, "Mode 1      RIGHT")
+                stdscr.addstr(0, 6, "      RIGHT")
             elif c == ord(' '):
                 mode.create()
-                stdscr.addstr(0, 0, "Mode 1     CREATE")
+                stdscr.addstr(0, 6, "     CREATE")
             stdscr.refresh()
 
 
