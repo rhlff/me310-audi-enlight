@@ -30,7 +30,9 @@ class LEDWorldBuilder(object):
         led_count = max(self.led_locations.keys()) + 1
         return LEDWorld(led_count, self.led_locations.values())
 
-    def add_led_strip(self, opc_start_index, led_count, start_x, start_y, end_x, end_y, z):
+    def add_led_strip(self, opc_start_index, led_count, start_x, start_y, end_x, end_y, z, reverse=False):
+        if reverse: # switch start and end point
+            start_x, start_y, end_x, end_y = end_x, end_y, start_x, start_y
         spacing_x = (end_x - start_x) * 1.0 / led_count
         spacing_y = (end_y - start_y) * 1.0 / led_count
         for i in xrange(led_count):
@@ -39,8 +41,9 @@ class LEDWorldBuilder(object):
             self.led_locations[opc_start_index+i] = LEDLocation(angle, distance, z, opc_start_index+i)
         return self
 
-    def add_led_circle(self, opc_start_index, led_count, radius, z):
+    def add_led_circle(self, opc_start_index, led_count, radius, z, reverse=False):
         angle_per_led = 360 / led_count
+        angle_per_led = angle_per_led*-1 if reverse else angle_per_led
         for i in xrange(led_count):
             self.led_locations[opc_start_index+i] = LEDLocation(angle_per_led*i, radius, z, opc_start_index+i)
         return self
