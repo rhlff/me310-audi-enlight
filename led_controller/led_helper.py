@@ -6,9 +6,9 @@ def apply_brightness(brightness, r, g, b):
 
 
 def limit_color_values(r, g, b):
-    return (max(0, min(255, color[0])),
-            max(0, min(255, color[1])),
-            max(0, min(255, color[2])))
+    return (max(0, min(255, r)),
+            max(0, min(255, g)),
+            max(0, min(255, b)))
 
 
 def project_to_led(led_location, symbol_location, scale_factor=1):
