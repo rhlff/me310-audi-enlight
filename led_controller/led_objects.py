@@ -2,7 +2,10 @@ import abc
 import math
 from datetime import datetime
 
-from led_controller.led_helper import apply_brightness, project_to_led
+from led_controller.led_helper import (
+    apply_brightness, project_to_led, limit_color_values
+)
+
 
 class LEDObject:
     __metaclass__ = abc.ABCMeta
@@ -17,21 +20,26 @@ class LEDObject:
     def pixel_color(self, led_location, t):
         pass
 
+
 class UnlocatedLEDObject(LEDObject):
     pass
+
 
 class LocatedLEDObject(LEDObject):
     def __init__(self, color, intensity, location):
         super(LocatedLEDObject, self).__init__(color, intensity)
         self.location = location
 
+
 class LEDAll(UnlocatedLEDObject):
     def pixel_color(self, led_location, t):
         return self.color
 
+
 class LEDWave(UnlocatedLEDObject):
-    def __init__(self, color, intensity, speed, period, amplitude=0.3, vertical_shift=0.7):
-        self.wave_function = self.build_wave_function(period, amplitude, vertical_shift)
+    def __init__(self, color, intensity, speed, period,
+                 amplitude=0.3, vertical_shift=0.7):
+        self.wave_func = self.build_wave_function(period, amplitude, vertical_shift)
         self.speed = speed
         super(LEDWave, self).__init__(color, intensity)
 
@@ -42,9 +50,10 @@ class LEDWave(UnlocatedLEDObject):
 
     def pixel_color(self, led_location, t):
         time_delta = t - self.creation_time
-        time_diff = 0 if self.speed == 0 else time_delta.total_seconds() / self.speed
-        brightness_factor = self.wave_function(led_location.angle, time_diff)
+        time_diff = 0 if self.speed == 0 else time_delta.total_seconds()/self.speed
+        brightness_factor = self.wave_func(led_location.angle, time_diff)
         return apply_brightness(brightness_factor, *self.color)
+
 
 class LEDSpot(LocatedLEDObject):
     def __init__(self, color, intensity, location, radius):
@@ -60,7 +69,8 @@ class LEDSpot(LocatedLEDObject):
 
         brightness_factor = 1 - distance/self.radius
         color = apply_brightness(brightness_factor, *self.color)
-        return (max(0, min(255, color[0])), max(0, min(255, color[1])), max(0, min(255, color[2])))
+        return limit_color_values(*color)
+
 
 class LEDDrop(LocatedLEDObject):
     def __init__(self, color, intensity, location, initial_radius, speed):
@@ -88,7 +98,8 @@ class LEDDrop(LocatedLEDObject):
         if brightness_factor_time < 0.2:
             self.dead = True
         color = apply_brightness(brightness_factor, *self.color)
-        return (max(0, min(255, color[0])), max(0, min(255, color[1])), max(0, min(255, color[2])))
+        return limit_color_values(*color)
+
 
 class LEDAllPulsing(UnlocatedLEDObject):
     def __init__(self, color, intensity, speed):
@@ -105,6 +116,7 @@ class LEDAllPulsing(UnlocatedLEDObject):
 
         brightness_factor = amplitude*math.sin(time_diff)+vertical_shift
         return apply_brightness(brightness_factor, *self.color)
+
 
 class LEDContinuousDrop(LocatedLEDObject):
     def __init__(self, color, intensity, location, interval, speed, period=0.5, decrease=0.025, end_after=None):
@@ -123,7 +135,7 @@ class LEDContinuousDrop(LocatedLEDObject):
         time_delta = t - self.creation_time
         time_diff = 0 if self.speed == 0 else time_delta.total_seconds() / self.speed * 2
 
-        decrease_factor = max(0 , 1-self.decrease*distance)
+        decrease_factor = max(0, 1-self.decrease*distance)
         if self.period*distance/math.pi > time_diff+0.5:
             return None
         if self.end_after:

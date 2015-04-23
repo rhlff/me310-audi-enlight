@@ -10,6 +10,7 @@ FC_SERVER = '172.16.20.233:7890'
 # FC_SERVER = '192.168.2.1:7890'
 client = opc.Client(FC_SERVER)
 
+
 def all_leds_on():
     builder = LEDWorldBuilder().add_led_circle(0, 180, 1, 0)
     world = builder.build()
@@ -17,6 +18,7 @@ def all_leds_on():
     pixels = world.draw([led_all], None)
     client.put_pixels(pixels)
     client.put_pixels(pixels)
+
 
 def all_leds_off():
     builder = LEDWorldBuilder().add_led_circle(0, 180, 1, 0)
@@ -26,11 +28,12 @@ def all_leds_off():
     client.put_pixels(pixels)
     client.put_pixels(pixels)
 
+
 def show_spot():
     builder = LEDWorldBuilder()
-    builder.add_led_strip(0,   60, -0.5, 0.5, 0.5, 0.5, 1.0/60 * -1)
-    builder.add_led_strip(60,  60, -0.5, 0.5, 0.5, 0.5, 1.0/60 *  0)
-    builder.add_led_strip(120, 60, -0.5, 0.5, 0.5, 0.5, 1.0/60 *  1)
+    builder.add_led_strip(0, 60, -0.5, 0.5, 0.5, 0.5, 1.0/60 * -1)
+    builder.add_led_strip(60, 60, -0.5, 0.5, 0.5, 0.5, 1.0/60 * 0)
+    builder.add_led_strip(120, 60, -0.5, 0.5, 0.5, 0.5, 1.0/60 * 1)
     world = builder.build()
     color = (255, 0, 0)
     location = ObjectLocation(0, 1.414213562)
@@ -45,11 +48,12 @@ def show_spot():
         client.put_pixels(pixels)
         time.sleep(0.02)
 
+
 def show_wave():
     builder = LEDWorldBuilder()
-    builder.add_led_circle(0,   60, 0.5, 1.0/60 * -1)
-    builder.add_led_circle(60,  60, 0.5, 1.0/60 *  0)
-    builder.add_led_circle(120, 60, 0.5, 1.0/60 *  1)
+    builder.add_led_circle(0, 60, 0.5, 1.0/60 * -1)
+    builder.add_led_circle(60, 60, 0.5, 1.0/60 * 0)
+    builder.add_led_circle(120, 60, 0.5, 1.0/60 * 1)
     world = builder.build()
     color = (150, 0, 0)
     led_wave = LEDWave(color, 0, 1, 15)
@@ -60,11 +64,12 @@ def show_wave():
         client.put_pixels(pixels)
         time.sleep(0.02)
 
+
 def show_drop():
     builder = LEDWorldBuilder()
-    builder.add_led_strip(0,   60, -0.5, 0.5, 0.5, 0.5, 1.0/60 * -1)
-    builder.add_led_strip(60,  60, -0.5, 0.5, 0.5, 0.5, 1.0/60 *  0)
-    builder.add_led_strip(120, 60, -0.5, 0.5, 0.5, 0.5, 1.0/60 *  1)
+    builder.add_led_strip(0, 60, -0.5, 0.5, 0.5, 0.5, 1.0/60 * -1)
+    builder.add_led_strip(60, 60, -0.5, 0.5, 0.5, 0.5, 1.0/60 * 0)
+    builder.add_led_strip(120, 60, -0.5, 0.5, 0.5, 0.5, 1.0/60 * 1)
     world = builder.build()
     location = ObjectLocation(0, 0.5)
     color = (52, 141, 151)
@@ -77,11 +82,12 @@ def show_drop():
         symbols = [s for s in symbols if not s.dead]
         time.sleep(0.02)
 
+
 def show_continuous_drop():
     builder = LEDWorldBuilder()
-    builder.add_led_strip(0,   60, -0.5, 0.5, 0.5, 0.5, 1.0/60 * -1)
-    builder.add_led_strip(60,  60, -0.5, 0.5, 0.5, 0.5, 1.0/60 *  0)
-    builder.add_led_strip(120, 60, -0.5, 0.5, 0.5, 0.5, 1.0/60 *  1)
+    builder.add_led_strip(0, 60, -0.5, 0.5, 0.5, 0.5, 1.0/60 * -1)
+    builder.add_led_strip(60, 60, -0.5, 0.5, 0.5, 0.5, 1.0/60 * 0)
+    builder.add_led_strip(120, 60, -0.5, 0.5, 0.5, 0.5, 1.0/60 * 1)
     world = builder.build()
     location = ObjectLocation(0, 0.5)
     color = (52, 141, 151)
@@ -95,11 +101,12 @@ def show_continuous_drop():
         symbols = [s for s in symbols if not s.dead]
         time.sleep(0.02)
 
+
 def show_pulsing():
     builder = LEDWorldBuilder()
-    builder.add_led_strip(0,   60, -0.5, 0.5, 0.5, 0.5, 1.0/60 * -1)
-    builder.add_led_strip(60,  60, -0.5, 0.5, 0.5, 0.5, 1.0/60 *  0)
-    builder.add_led_strip(120, 60, -0.5, 0.5, 0.5, 0.5, 1.0/60 *  1)
+    builder.add_led_strip(0, 60, -0.5, 0.5, 0.5, 0.5, 1.0/60 * -1)
+    builder.add_led_strip(60, 60, -0.5, 0.5, 0.5, 0.5, 1.0/60 * 0)
+    builder.add_led_strip(120, 60, -0.5, 0.5, 0.5, 0.5, 1.0/60 * 1)
     world = builder.build()
     color = (255, 0, 0)
     led_puls = LEDAllPulsing(color, 0, 0.1)

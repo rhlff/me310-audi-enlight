@@ -13,6 +13,7 @@ client = opc.Client(FC_SERVER)
 
 START_ANGLE = 40
 
+
 class curses_screen:
     def __enter__(self):
         self.stdscr = curses.initscr()
@@ -21,19 +22,21 @@ class curses_screen:
         self.stdscr.keypad(1)
         SCREEN_HEIGHT, SCREEN_WIDTH = self.stdscr.getmaxyx()
         return self.stdscr
-    def __exit__(self,a,b,c):
+
+    def __exit__(self, a, b, c):
         curses.nocbreak()
         self.stdscr.keypad(0)
         curses.echo()
         curses.endwin()
 
+
 class TestingMode(threading.Thread):
     def __init__(self, client):
         super(TestingMode, self).__init__()
         builder = LEDWorldBuilder()
-        builder.add_led_strip(0,   60, -0.5, 0.5, 0.5, 0.5, 1.0/60 * -1, reverse=True)
-        builder.add_led_strip(60,  60, -0.5, 0.5, 0.5, 0.5, 1.0/60 *  0, reverse=True)
-        builder.add_led_strip(120, 60, -0.5, 0.5, 0.5, 0.5, 1.0/60 *  1, reverse=True)
+        builder.add_led_strip(0, 60, -0.5, 0.5, 0.5, 0.5, 1.0/60 * -1, reverse=True)
+        builder.add_led_strip(60, 60, -0.5, 0.5, 0.5, 0.5, 1.0/60 * 0, reverse=True)
+        builder.add_led_strip(120, 60, -0.5, 0.5, 0.5, 0.5, 1.0/60 * 1, reverse=True)
         self.world = builder.build()
         self.client = client
         self.stopped = False
@@ -51,7 +54,6 @@ class TestingMode(threading.Thread):
         self.stopped = True
         self.off()
 
-
     def create(self):
         pass
 
@@ -60,6 +62,7 @@ class TestingMode(threading.Thread):
 
     def off(self):
         self.client.put_pixels([(0, 0, 0,)] * self.world.led_count)
+
 
 class BaseTestingMode(TestingMode):
     def __init__(self, client):
@@ -76,6 +79,7 @@ class BaseTestingMode(TestingMode):
         if self.spot:
             self.spot.location.angle += angle
 
+
 class TestingMode1(BaseTestingMode):
     def create(self):
         color = (255, 0, 0)
@@ -86,6 +90,7 @@ class TestingMode1(BaseTestingMode):
         color = (128, 255, 128)
         self.spot = LEDSpot(color, 0, location, 1.0/60 * 20)
         self.symbols.append(self.spot)
+
 
 class TestingMode2(BaseTestingMode):
     def create(self):
@@ -98,6 +103,7 @@ class TestingMode2(BaseTestingMode):
         self.spot = LEDSpot(color, 0, location, 1.0/60 * 20)
         self.symbols.append(self.spot)
 
+
 class TestingMode3(BaseTestingMode):
     def create(self):
         color = (255, 0, 0)
@@ -108,6 +114,7 @@ class TestingMode3(BaseTestingMode):
         color = (128, 255, 128)
         self.spot = LEDSpot(color, 0, location, 1.0/60 * 20 * 1.5)
         self.symbols.append(self.spot)
+
 
 class TestingMode4(TestingMode):
     def __init__(self, client):
@@ -120,6 +127,7 @@ class TestingMode4(TestingMode):
             self.symbols.remove(self.puls)
         else:
             self.symbols.append(self.puls)
+
 
 class TestingMode5(BaseTestingMode):
     def create(self):

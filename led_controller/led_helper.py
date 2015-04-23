@@ -1,7 +1,15 @@
 import math
 
+
 def apply_brightness(brightness, r, g, b):
     return (brightness*r, brightness*g, brightness*b)
+
+
+def limit_color_values(r, g, b):
+    return (max(0, min(255, color[0])),
+            max(0, min(255, color[1])),
+            max(0, min(255, color[2])))
+
 
 def project_to_led(led_location, symbol_location, scale_factor=1):
     pixel_angle = (led_location.angle - symbol_location.angle) % 360
@@ -10,7 +18,8 @@ def project_to_led(led_location, symbol_location, scale_factor=1):
     y = led_location.z * symbol_location.distance / led_location.distance
     return x*scale_factor, y*scale_factor
 
+
 def angle_and_distance_for_point(x, y):
     distance = math.sqrt(x*x + y*y)
-    angle = math.copysign(math.degrees( math.acos(y / distance) ), x)
+    angle = math.copysign(math.degrees(math.acos(y/distance)), x)
     return angle, distance

@@ -1,5 +1,8 @@
 import math
-from led_controller.led_helper import angle_and_distance_for_point
+from led_controller.led_helper import (
+    angle_and_distance_for_point, limit_color_values
+)
+
 
 class LEDWorld(object):
     def __init__(self, led_count, led_locations):
@@ -16,9 +19,10 @@ class LEDWorld(object):
     def _rgb_for_led(self, led_location, detected_objects, t):
         colors = [l for l in [led_obj.pixel_color(led_location, t) for led_obj in detected_objects] if l]
         if colors:
-            color = reduce( (lambda a, b: (a[0]+b[0], a[1]+b[1], a[2]+b[2],)), colors)
-            return (min(color[0], 255), min(color[1], 255), min(color[2], 255), )
-        return (0, 0, 0) # default: return black
+            color = reduce((lambda a, b: (a[0]+b[0], a[1]+b[1], a[2]+b[2],)), colors)
+            return limit_color_values(*color)
+        return (0, 0, 0)  # default: return black
+
 
 class LEDWorldBuilder(object):
     def __init__(self):
@@ -31,7 +35,7 @@ class LEDWorldBuilder(object):
         return LEDWorld(led_count, self.led_locations.values())
 
     def add_led_strip(self, opc_start_index, led_count, start_x, start_y, end_x, end_y, z, reverse=False):
-        if reverse: # switch start and end point
+        if reverse:  # switch start and end point
             start_x, start_y, end_x, end_y = end_x, end_y, start_x, start_y
         spacing_x = (end_x - start_x) * 1.0 / led_count
         spacing_y = (end_y - start_y) * 1.0 / led_count
@@ -48,10 +52,12 @@ class LEDWorldBuilder(object):
             self.led_locations[opc_start_index+i] = LEDLocation(angle_per_led*i, radius, z, opc_start_index+i)
         return self
 
+
 class ObjectLocation(object):
     def __init__(self, angle, distance):
         self.angle = angle % 360
         self.distance = distance
+
 
 class LEDLocation(ObjectLocation):
     def __init__(self, angle, distance, z, opc_index):
@@ -64,4 +70,3 @@ class LEDLocation(ObjectLocation):
 
     def __repr__(self):
         return str(self)
-
