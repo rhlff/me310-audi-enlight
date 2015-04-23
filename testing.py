@@ -31,9 +31,9 @@ class TestingMode(threading.Thread):
     def __init__(self, client):
         super(TestingMode, self).__init__()
         builder = LEDWorldBuilder()
-        builder.add_led_strip(0,   60, -0.5, 0.5, 0.5, 0.5, 1.0/60 * -1)
-        builder.add_led_strip(60,  60, -0.5, 0.5, 0.5, 0.5, 1.0/60 *  0)
-        builder.add_led_strip(120, 60, -0.5, 0.5, 0.5, 0.5, 1.0/60 *  1)
+        builder.add_led_strip(0,   60, -0.5, 0.5, 0.5, 0.5, 1.0/60 * -1, reverse=True)
+        builder.add_led_strip(60,  60, -0.5, 0.5, 0.5, 0.5, 1.0/60 *  0, reverse=True)
+        builder.add_led_strip(120, 60, -0.5, 0.5, 0.5, 0.5, 1.0/60 *  1, reverse=True)
         self.world = builder.build()
         self.client = client
         self.stopped = False
@@ -169,10 +169,10 @@ def main():
                 mode.stop()
                 break  # Exit
             elif c == curses.KEY_LEFT:
-                mode.move(1.5)
+                mode.move(-1.5)
                 stdscr.addstr(0, 6, "       LEFT")
             elif c == curses.KEY_RIGHT:
-                mode.move(-1.5)
+                mode.move(1.5)
                 stdscr.addstr(0, 6, "      RIGHT")
             elif c == ord(' '):
                 mode.create()
