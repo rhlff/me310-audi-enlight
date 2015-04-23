@@ -14,7 +14,8 @@ client = opc.Client(FC_SERVER)
 def all_leds_on():
     builder = LEDWorldBuilder().add_led_circle(0, 180, 1, 0)
     world = builder.build()
-    led_all = LEDAll((255, 0, 0), 1)
+    color = (255, 0, 0)
+    led_all = LEDAll(color)
     pixels = world.draw([led_all], None)
     client.put_pixels(pixels)
     client.put_pixels(pixels)
@@ -23,7 +24,8 @@ def all_leds_on():
 def all_leds_off():
     builder = LEDWorldBuilder().add_led_circle(0, 180, 1, 0)
     world = builder.build()
-    led_all = LEDAll((0, 0, 0), 1)
+    color = (0, 0, 0)
+    led_all = LEDAll(color)
     pixels = world.draw([led_all], None)
     client.put_pixels(pixels)
     client.put_pixels(pixels)
@@ -37,7 +39,7 @@ def show_spot():
     world = builder.build()
     color = (255, 0, 0)
     location = ObjectLocation(0, 1.414213562)
-    led_spot = LEDSpot(color, 0, location, 1.0/60 * 20)
+    led_spot = LEDSpot(color, location, 1.0/60 * 20)
 
     angle_inc = 1
     while True:
@@ -56,7 +58,7 @@ def show_wave():
     builder.add_led_circle(120, 60, 0.5, 1.0/60 * 1)
     world = builder.build()
     color = (150, 0, 0)
-    led_wave = LEDWave(color, 0, 1, 15)
+    led_wave = LEDWave(color, 1, 15)
 
     while True:
         now = datetime.now()
@@ -73,7 +75,7 @@ def show_drop():
     world = builder.build()
     location = ObjectLocation(0, 0.5)
     color = (52, 141, 151)
-    led_drop = LEDDrop(color, 0, location, 1.0/60 * 10, 0.05)
+    led_drop = LEDDrop(color, location, 1.0/60 * 10, 0.05)
     symbols = [led_drop]
     while symbols:
         now = datetime.now()
@@ -91,7 +93,7 @@ def show_continuous_drop():
     world = builder.build()
     location = ObjectLocation(0, 0.5)
     color = (52, 141, 151)
-    led_drop = LEDContinuousDrop(color, 0, location, 1.0/60 * 10, 1.0)
+    led_drop = LEDContinuousDrop(color, location, 1.0/60 * 10, 1.0)
     symbols = [led_drop]
     while symbols:
         now = datetime.now()
@@ -109,7 +111,7 @@ def show_pulsing():
     builder.add_led_strip(120, 60, -0.5, 0.5, 0.5, 0.5, 1.0/60 * 1)
     world = builder.build()
     color = (255, 0, 0)
-    led_puls = LEDAllPulsing(color, 0, 0.1)
+    led_puls = LEDAllPulsing(color, 0.1)
 
     while True:
         now = datetime.now()

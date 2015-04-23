@@ -72,7 +72,7 @@ class BaseTestingMode(TestingMode):
     def create(self):
         color = (255, 255, 255)
         location = ObjectLocation(START_ANGLE, 1.414213562)
-        self.spot = LEDSpot(color, 0, location, 1.0/60 * 20)
+        self.spot = LEDSpot(color, location, 1.0/60 * 20)
         self.symbols.append(self.spot)
 
     def move(self, angle):
@@ -84,11 +84,11 @@ class TestingMode1(BaseTestingMode):
     def create(self):
         color = (255, 0, 0)
         location = ObjectLocation(START_ANGLE, 1.414213562)
-        led_drop = LEDDrop(color, 0, location, 1.0/60 * 10 * 1.4, 0.05)
+        led_drop = LEDDrop(color, location, 1.0/60 * 10 * 1.4, 0.05)
         self.symbols.append(led_drop)
         time.sleep(0.1)
         color = (128, 255, 128)
-        self.spot = LEDSpot(color, 0, location, 1.0/60 * 20)
+        self.spot = LEDSpot(color, location, 1.0/60 * 20)
         self.symbols.append(self.spot)
 
 
@@ -96,11 +96,11 @@ class TestingMode2(BaseTestingMode):
     def create(self):
         color = (200, 200, 200)
         location = ObjectLocation(START_ANGLE, 1.414213562)
-        led_drop = LEDDrop(color, 0, location, 1.0/60 * 10 * 1.4, 0.05)
+        led_drop = LEDDrop(color, location, 1.0/60 * 10 * 1.4, 0.05)
         self.symbols.append(led_drop)
         time.sleep(0.1)
         color = (255, 255, 255)
-        self.spot = LEDSpot(color, 0, location, 1.0/60 * 20)
+        self.spot = LEDSpot(color, location, 1.0/60 * 20)
         self.symbols.append(self.spot)
 
 
@@ -108,11 +108,11 @@ class TestingMode3(BaseTestingMode):
     def create(self):
         color = (255, 0, 0)
         location = ObjectLocation(START_ANGLE, 1.414213562)
-        led_drop = LEDDrop(color, 0, location, 1.0/60 * 10 * 2.0, 0.05)
+        led_drop = LEDDrop(color, location, 1.0/60 * 10 * 2.0, 0.05)
         self.symbols.append(led_drop)
         time.sleep(0.1)
         color = (128, 255, 128)
-        self.spot = LEDSpot(color, 0, location, 1.0/60 * 20 * 1.5)
+        self.spot = LEDSpot(color, location, 1.0/60 * 20 * 1.5)
         self.symbols.append(self.spot)
 
 
@@ -120,7 +120,7 @@ class TestingMode4(TestingMode):
     def __init__(self, client):
         super(TestingMode4, self).__init__(client)
         color = (255, 0, 0)
-        self.puls = LEDAllPulsing(color, 0, 0.1)
+        self.puls = LEDAllPulsing(color, 0.1)
 
     def create(self):
         if self.puls in self.symbols:
@@ -133,7 +133,7 @@ class TestingMode5(BaseTestingMode):
     def create(self):
         color = (128, 255, 128)
         location = ObjectLocation(START_ANGLE, 1.414213562)
-        self.spot = LEDContinuousDrop(color, 0, location, 1.0/60 * 10 * 2.0, 1.0, 0.25, 0.05)
+        self.spot = LEDContinuousDrop(color, location, 1.0/60 * 10 * 2.0, 1.0, 0.25, 0.05)
         self.symbols.append(self.spot)
 
 

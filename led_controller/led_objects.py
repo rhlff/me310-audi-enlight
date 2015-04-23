@@ -10,9 +10,8 @@ from led_controller.led_helper import (
 class LEDObject:
     __metaclass__ = abc.ABCMeta
 
-    def __init__(self, color, intensity):
+    def __init__(self, color):
         self.color = color
-        self.intensity = intensity
         self.creation_time = datetime.now()
         self.dead = False
 
@@ -26,8 +25,8 @@ class UnlocatedLEDObject(LEDObject):
 
 
 class LocatedLEDObject(LEDObject):
-    def __init__(self, color, intensity, location):
-        super(LocatedLEDObject, self).__init__(color, intensity)
+    def __init__(self, color, location):
+        super(LocatedLEDObject, self).__init__(color)
         self.location = location
 
 
@@ -37,11 +36,11 @@ class LEDAll(UnlocatedLEDObject):
 
 
 class LEDWave(UnlocatedLEDObject):
-    def __init__(self, color, intensity, speed, period,
-                 amplitude=0.3, vertical_shift=0.7):
+    def __init__(self, color, speed, period, amplitude=0.3,
+                 vertical_shift=0.7):
         self.wave_func = self.build_wave_function(period, amplitude, vertical_shift)
         self.speed = speed
-        super(LEDWave, self).__init__(color, intensity)
+        super(LEDWave, self).__init__(color)
 
     def build_wave_function(self, period, amplitude, vertical_shift):
         def wave_function(angle, phase_shift):
@@ -56,8 +55,8 @@ class LEDWave(UnlocatedLEDObject):
 
 
 class LEDSpot(LocatedLEDObject):
-    def __init__(self, color, intensity, location, radius):
-        super(LEDSpot, self).__init__(color, intensity, location)
+    def __init__(self, color, location, radius):
+        super(LEDSpot, self).__init__(color, location)
         self.radius = radius
 
     def pixel_color(self, led_location, t):
@@ -73,8 +72,8 @@ class LEDSpot(LocatedLEDObject):
 
 
 class LEDDrop(LocatedLEDObject):
-    def __init__(self, color, intensity, location, initial_radius, speed):
-        super(LEDDrop, self).__init__(color, intensity, location)
+    def __init__(self, color, location, initial_radius, speed):
+        super(LEDDrop, self).__init__(color, location)
         self.initial_radius = initial_radius
         self.speed = speed
 
@@ -102,8 +101,8 @@ class LEDDrop(LocatedLEDObject):
 
 
 class LEDAllPulsing(UnlocatedLEDObject):
-    def __init__(self, color, intensity, speed):
-        super(LEDAllPulsing, self).__init__(color, intensity)
+    def __init__(self, color, speed):
+        super(LEDAllPulsing, self).__init__(color)
         self.speed = speed
 
     def pixel_color(self, led_location, t):
@@ -119,8 +118,8 @@ class LEDAllPulsing(UnlocatedLEDObject):
 
 
 class LEDContinuousDrop(LocatedLEDObject):
-    def __init__(self, color, intensity, location, interval, speed, period=0.5, decrease=0.025, end_after=None):
-        super(LEDContinuousDrop, self).__init__(color, intensity, location)
+    def __init__(self, color, location, interval, speed, period=0.5, decrease=0.025, end_after=None):
+        super(LEDContinuousDrop, self).__init__(color, location)
         self.interval = interval
         self.speed = speed
         self.period = period
