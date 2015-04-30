@@ -5,6 +5,9 @@ from led_controller.led_helper import (
 
 
 class LEDWorld(object):
+    """
+    This virtual LED system handles the visualization of objects on every LED.
+    """
     def __init__(self, led_count, led_locations):
         self.led_count = led_count
         self.led_locations = led_locations
@@ -29,6 +32,9 @@ class LEDWorld(object):
 
 
 class LEDWorldBuilder(object):
+    """
+    Builder to create a virtual LED system
+    """
     def __init__(self):
         self.led_locations = {}
 
@@ -38,6 +44,19 @@ class LEDWorldBuilder(object):
 
     def add_led_strip(self, opc_start_index, led_count, start_x, start_y,
                       end_x, end_y, z, reverse=False):
+        """
+        Add a line of LEDs from point A to point B to the LED system
+
+        Keyword arguments:
+        opc_start_index -- start index for the open pixel control
+        led_count -- number of LEDs
+        start_x -- x coordinate of point A
+        start_y -- y coordinate of point A
+        end_x -- x coordinate of point B
+        end_y -- y coordinate of point B
+        z -- the vertical offset of the LED
+        reverse -- revese the opc_index of the LEDs (default=False)
+        """
         if reverse:  # switch start and end point
             start_x, start_y, end_x, end_y = end_x, end_y, start_x, start_y
         spacing_x = (end_x - start_x) * 1.0 / led_count
@@ -51,6 +70,16 @@ class LEDWorldBuilder(object):
 
     def add_led_circle(self, opc_start_index, led_count, radius, z,
                        reverse=False):
+        """
+        Add a circle of LEDs to the LED system
+
+        Keyword arguments:
+        opc_start_index -- start index for the open pixel control
+        led_count -- number of LEDs
+        radius -- the radius of the LED circle
+        z -- the vertical offset of the LED
+        reverse -- revese the opc_index of the LEDs (default=False)
+        """
         angle_per_led = 360 / led_count
         angle_per_led = angle_per_led*-1 if reverse else angle_per_led
         for i in xrange(led_count):
@@ -60,12 +89,18 @@ class LEDWorldBuilder(object):
 
 
 class ObjectLocation(object):
+    """
+    Represents a generic object in the virtual space.
+    """
     def __init__(self, angle, distance):
         self.angle = angle % 360
         self.distance = distance
 
 
 class LEDLocation(ObjectLocation):
+    """
+    Represents a LED in the virtual space.
+    """
     def __init__(self, angle, distance, z, opc_index):
         super(LEDLocation, self).__init__(angle, distance)
         self.z = z
