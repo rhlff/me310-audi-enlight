@@ -114,9 +114,8 @@ class LEDAllPulsing(UnlocatedLEDObject):
 
 
 class LEDContinuousDrop(LocatedLEDObject):
-    def __init__(self, color, location, interval, speed, period=0.5, decrease=0.025, end_after=None):
+    def __init__(self, color, location, speed, period=0.5, decrease=0.025, end_after=None):
         super(LEDContinuousDrop, self).__init__(color, location)
-        self.interval = interval
         self.speed = speed
         self.period = period
         self.decrease = decrease
