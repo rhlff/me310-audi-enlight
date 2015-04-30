@@ -75,7 +75,7 @@ def show_drop():
     world = builder.build()
     location = ObjectLocation(0, 0.5)
     color = (52, 141, 151)
-    led_drop = LEDDrop(color, location, 1.0/60 * 10, 0.05)
+    led_drop = LEDContinuousDrop(color, location, 0.75, decrease=0.05, end_after=1)
     symbols = [led_drop]
     while symbols:
         now = datetime.now()
@@ -93,7 +93,7 @@ def show_continuous_drop():
     world = builder.build()
     location = ObjectLocation(0, 0.5)
     color = (52, 141, 151)
-    led_drop = LEDContinuousDrop(color, location, 1.0/60 * 10, 1.0)
+    led_drop = LEDContinuousDrop(color, location, 1.0)
     symbols = [led_drop]
     while symbols:
         now = datetime.now()

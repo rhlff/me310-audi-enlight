@@ -67,35 +67,6 @@ class LEDSpot(LocatedLEDObject):
         return limit_color_values(*color)
 
 
-class LEDDrop(LocatedLEDObject):
-    def __init__(self, color, location, initial_radius, speed):
-        super(LEDDrop, self).__init__(color, location)
-        self.initial_radius = initial_radius
-        self.speed = speed
-
-    def pixel_color(self, led_location, t):
-        offset_x, offset_y = project_to_led(led_location, self.location)
-        distance = math.sqrt(offset_x*offset_x + offset_y*offset_y)
-
-        time_delta = t - self.creation_time
-        time_diff = 0 if self.speed == 0 else time_delta.total_seconds() / self.speed
-
-        inner_spacing = self.initial_radius * time_diff / 10
-
-        if distance > self.initial_radius + inner_spacing:
-            return None
-
-        brightness_factor_time = 1/max(1.0, time_diff/5)
-        brightness_factor = min(1, 1 - (distance - inner_spacing)/(self.initial_radius))
-        brightness_factor *= brightness_factor_time
-        if distance < inner_spacing:
-            brightness_factor -= 1 - distance/inner_spacing
-        if brightness_factor_time < 0.2:
-            self.dead = True
-        color = apply_brightness(brightness_factor, *self.color)
-        return limit_color_values(*color)
-
-
 class LEDAllPulsing(UnlocatedLEDObject):
     def __init__(self, color, speed):
         super(LEDAllPulsing, self).__init__(color)
