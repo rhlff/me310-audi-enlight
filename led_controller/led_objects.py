@@ -1,4 +1,3 @@
-import abc
 import math
 from datetime import datetime
 
@@ -7,17 +6,14 @@ from led_controller.led_helper import (
 )
 
 
-class LEDObject:
-    __metaclass__ = abc.ABCMeta
-
+class LEDObject(object):
     def __init__(self, color):
         self.color = color
         self.creation_time = datetime.now()
         self.dead = False
 
-    @abc.abstractmethod
     def pixel_color(self, led_location, t):
-        pass
+        raise NotImplementedError('subclasses of LEDObject must provide a pixel_color() method')
 
 
 class UnlocatedLEDObject(LEDObject):
