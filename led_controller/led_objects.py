@@ -8,6 +8,10 @@ from led_controller.led_helper import (
 
 class LEDObject(object):
     def __init__(self, color):
+        """
+        Keyword arguments:
+        color -- the color of the LEDObject
+        """
         self.color = color
         self.creation_time = datetime.now()
         self.dead = False
@@ -22,18 +26,51 @@ class UnlocatedLEDObject(LEDObject):
 
 class LocatedLEDObject(LEDObject):
     def __init__(self, color, location):
+        """
+        Keyword arguments:
+        location -- the location of the LEDObject
+        """
         super(LocatedLEDObject, self).__init__(color)
         self.location = location
 
 
 class LEDAll(UnlocatedLEDObject):
+    """
+    Turns all LEDs on.
+
+    Customization:
+    - color
+    """
     def pixel_color(self, led_location, t):
         return self.color
 
 
 class LEDWave(UnlocatedLEDObject):
+    """
+    Shows a continuous wave on all LEDs.
+
+    Customization:
+    - color
+    - speed
+    - number of crests
+    - height of crests
+    - minimal color factor of throughs
+    """
+
     def __init__(self, color, speed, period, amplitude=0.3,
                  vertical_shift=0.7):
+        """
+        Keyword arguments:
+        color -- the color of the wave
+        speed -- the speed the wave is moving
+                 =0 -> no movement
+                 >0 -> movement clockwise
+                 <0 -> movement counterclockwise
+        period -- the number of overall crests of the wave
+        amplitude -- (default 0.3)
+        vertical_shift -- vertical shift of the curve (default 0.7)
+                          The minmal color factor is vertical_shift-amplitude.
+        """
         self.wave_func = self.build_wave_function(period, amplitude, vertical_shift)
         self.speed = speed
         super(LEDWave, self).__init__(color)
@@ -51,7 +88,21 @@ class LEDWave(UnlocatedLEDObject):
 
 
 class LEDSpot(LocatedLEDObject):
+    """
+    Shows a simple circular spot at a given location.
+
+    Customization:
+    - color
+    - location
+    - radius of spot
+    """
     def __init__(self, color, location, radius):
+        """
+        Keyword arguments:
+        color -- the color of the spot
+        location -- the location of the spot
+        radius -- the radius of the spot (in meters)
+        """
         super(LEDSpot, self).__init__(color, location)
         self.radius = radius
 
@@ -68,7 +119,19 @@ class LEDSpot(LocatedLEDObject):
 
 
 class LEDAllPulsing(UnlocatedLEDObject):
+    """
+    Let all LEDs alternate between a maximum and minimum brightness value.
+
+    Customization:
+    - color
+    - speed of alteration
+    """
     def __init__(self, color, speed):
+        """
+        Keyword arguments:
+        color -- the color of the LEDs
+        speed -- the speed of the alteration
+        """
         super(LEDAllPulsing, self).__init__(color)
         self.speed = speed
 
@@ -85,7 +148,27 @@ class LEDAllPulsing(UnlocatedLEDObject):
 
 
 class LEDContinuousDrop(LocatedLEDObject):
+    """
+    Shows waves like water dropping into water.
+
+    Customization:
+    - color
+    - location
+    - speed of waves
+    - distance between crests
+    - decrease rate of crests
+    - end after n waves
+    """
     def __init__(self, color, location, speed, period=0.5, decrease=0.025, end_after=None):
+        """
+        Keyword arguments:
+        color -- the color of the waves
+        location -- the location of the drops
+        speed -- the speed of the waves
+        period -- the distance between the crests (default=0.5)
+        decrease -- the decrease rate of wave crests (default=0.025)
+        end_after -- number of drop to be shown (default=None)
+        """
         super(LEDContinuousDrop, self).__init__(color, location)
         self.speed = speed
         self.period = period
