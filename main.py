@@ -20,6 +20,17 @@ def all_leds_on():
     client.put_pixels(pixels)
 
 
+def working_light():
+    world = LEDWorldBuilder().add_octa_circle().build()
+    color = (237, 183, 21)
+    location = ObjectLocation(-45, 90)
+    led_spot = LEDSpot(color, location, 120)
+
+    pixels = world.draw([led_spot], 0)
+    client.put_pixels(pixels)
+    client.put_pixels(pixels)
+
+
 def all_leds_off():
     world = LEDWorldBuilder().add_octa_circle().build()
     color = (0, 0, 0)
@@ -124,7 +135,7 @@ def show_pulsing():
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Interior LED art for ME310 Audi')
-    parser.add_argument('pattern', choices=['off', 'all', 'spot', 'spotRound', 'wave', 'drop', 'conDrop', 'puls'])
+    parser.add_argument('pattern', choices=['off', 'all', 'spot', 'spotRound', 'wave', 'drop', 'conDrop', 'puls', 'workingLight'])
     args = parser.parse_args()
 
     {
@@ -136,4 +147,5 @@ if __name__ == '__main__':
         'drop': show_drop,
         'conDrop': show_continuous_drop,
         'puls': show_pulsing,
+        'workingLight': working_light,
     }[args.pattern]()
