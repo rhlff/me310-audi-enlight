@@ -12,8 +12,7 @@ client = opc.Client(FC_SERVER)
 
 
 def all_leds_on():
-    builder = LEDWorldBuilder().add_led_circle(0, 180, 1, 0)
-    world = builder.build()
+    world = LEDWorldBuilder().add_octa_circle().build()
     color = (255, 0, 0)
     led_all = LEDAll(color)
     pixels = world.draw([led_all], None)
@@ -22,8 +21,7 @@ def all_leds_on():
 
 
 def all_leds_off():
-    builder = LEDWorldBuilder().add_led_circle(0, 180, 1, 0)
-    world = builder.build()
+    world = LEDWorldBuilder().add_octa_circle().build()
     color = (0, 0, 0)
     led_all = LEDAll(color)
     pixels = world.draw([led_all], None)
@@ -32,19 +30,19 @@ def all_leds_off():
 
 
 def show_spot():
-    builder = LEDWorldBuilder()
-    builder.add_led_strip(0, 60, -0.5, 0.5, 0.5, 0.5, 1.0/60 * -1)
-    builder.add_led_strip(60, 60, -0.5, 0.5, 0.5, 0.5, 1.0/60 * 0)
-    builder.add_led_strip(120, 60, -0.5, 0.5, 0.5, 0.5, 1.0/60 * 1)
-    world = builder.build()
+    world = LEDWorldBuilder().add_octa_circle().build()
     color = (255, 0, 0)
     location = ObjectLocation(0, 1.414213562)
     led_spot = LEDSpot(color, location, 1.0/60 * 20)
 
+    pixels = world.draw([led_spot], 0)
+    client.put_pixels(pixels)
+    client.put_pixels(pixels)
+
     angle_inc = 1
     while True:
         led_spot.location.angle += angle_inc
-        if led_spot.location.angle > 45 or led_spot.location.angle < -45:
+        if led_spot.location.angle > 45 or led_spot.location.angle < (-45-45):
             angle_inc *= -1
         pixels = world.draw([led_spot], 0)
         client.put_pixels(pixels)
@@ -52,11 +50,7 @@ def show_spot():
 
 
 def show_wave():
-    builder = LEDWorldBuilder()
-    builder.add_led_circle(0, 60, 0.5, 1.0/60 * -1)
-    builder.add_led_circle(60, 60, 0.5, 1.0/60 * 0)
-    builder.add_led_circle(120, 60, 0.5, 1.0/60 * 1)
-    world = builder.build()
+    world = LEDWorldBuilder().add_octa_circle().build()
     color = (150, 0, 0)
     led_wave = LEDWave(color, 1, 15)
 
@@ -68,11 +62,7 @@ def show_wave():
 
 
 def show_drop():
-    builder = LEDWorldBuilder()
-    builder.add_led_strip(0, 60, -0.5, 0.5, 0.5, 0.5, 1.0/60 * -1)
-    builder.add_led_strip(60, 60, -0.5, 0.5, 0.5, 0.5, 1.0/60 * 0)
-    builder.add_led_strip(120, 60, -0.5, 0.5, 0.5, 0.5, 1.0/60 * 1)
-    world = builder.build()
+    world = LEDWorldBuilder().add_octa_circle().build()
     location = ObjectLocation(0, 0.5)
     color = (52, 141, 151)
     led_drop = LEDContinuousDrop(color, location, 0.75, decrease=0.05, end_after=1)
@@ -86,13 +76,9 @@ def show_drop():
 
 
 def show_continuous_drop():
-    builder = LEDWorldBuilder()
-    builder.add_led_strip(0, 60, -0.5, 0.5, 0.5, 0.5, 1.0/60 * -1)
-    builder.add_led_strip(60, 60, -0.5, 0.5, 0.5, 0.5, 1.0/60 * 0)
-    builder.add_led_strip(120, 60, -0.5, 0.5, 0.5, 0.5, 1.0/60 * 1)
-    world = builder.build()
+    world = LEDWorldBuilder().add_octa_circle().build()
     location = ObjectLocation(0, 0.5)
-    color = (52, 141, 151)
+    color = (255, 255, 255)#(52, 141, 151)
     led_drop = LEDContinuousDrop(color, location, 1.0)
     symbols = [led_drop]
     while symbols:
@@ -105,11 +91,7 @@ def show_continuous_drop():
 
 
 def show_pulsing():
-    builder = LEDWorldBuilder()
-    builder.add_led_strip(0, 60, -0.5, 0.5, 0.5, 0.5, 1.0/60 * -1)
-    builder.add_led_strip(60, 60, -0.5, 0.5, 0.5, 0.5, 1.0/60 * 0)
-    builder.add_led_strip(120, 60, -0.5, 0.5, 0.5, 0.5, 1.0/60 * 1)
-    world = builder.build()
+    world = LEDWorldBuilder().add_octa_circle().build()
     color = (255, 0, 0)
     led_puls = LEDAllPulsing(color, 0.1)
 

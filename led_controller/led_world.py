@@ -4,6 +4,56 @@ from led_controller.led_helper import (
 )
 
 
+led_length = 165.0/100/100
+
+
+class Point(object):
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+
+
+class PartConfig(object):
+    def __init__(self, point1, point2, point3):
+        self.point1 = point1
+        self.point2 = point2
+        self.point3 = point3
+
+    def _long_part_first(self):
+        length_part_1 = math.sqrt((self.point1.x-self.point2.x)**2
+                                  + (self.point1.y-self.point2.y)**2)
+        length_part_2 = math.sqrt((self.point2.x-self.point3.x)**2
+                                  + (self.point2.y-self.point3.y)**2)
+        return length_part_1 > length_part_2
+
+    def length_types(self):
+        types = ['short', 'long']
+        return reversed(types) if self._long_part_first() else types
+
+    def _subpart_points(self, subpart):
+        points = [self.point1, self.point2, self.point3]
+        return points[0:2] if subpart == 0 else points[1:3]
+
+    def _center(self, subpart):
+        points = self._subpart_points(subpart)
+        return Point((points[0].x+points[1].x)/2, (points[0].y+points[1].y)/2)
+
+    def _led_spacing(self, subpart):
+        points = self._subpart_points(subpart)
+        diff_x = points[0].x - points[1].x
+        diff_y = points[0].y - points[1].y
+        length = math.sqrt(diff_x**2 + diff_y**2)
+        return diff_x/length*led_length, diff_y/length*led_length
+
+    def start_end(self, subpart, led_count):
+        center = self._center(subpart)
+        led_spacing_x, led_spacing_y = self._led_spacing(subpart)
+        return Point(center.x + (led_count-0)*1.0/2*led_spacing_x,
+                     center.y + (led_count-0)*1.0/2*led_spacing_y), \
+               Point(center.x - (led_count-0)*1.0/2*led_spacing_x,
+                     center.y - (led_count-0)*1.0/2*led_spacing_y)
+
+
 class LEDWorld(object):
     """
     This virtual LED system handles the visualization of objects on every LED.
@@ -85,6 +135,56 @@ class LEDWorldBuilder(object):
         for i in xrange(led_count):
             led = LEDLocation(angle_per_led*i, radius, z, opc_start_index+i)
             self.led_locations[opc_start_index+i] = led
+        return self
+
+    def add_octa_circle(self):
+        circle_width = 105.0/100
+        part_short_length = 257.2/1000
+        part_long_length = 657.2/1000
+
+        led_counts = {
+            'short': {
+                'inner': 14,
+                'middle': 15,
+                'outer': 16,
+            },
+            'long': {
+                'inner': 38,
+                'middle': 39,
+                'outer': 40,
+            }
+        }
+
+        partConfigs = [
+            # # Part A
+            # PartConfig(Point(part_long_length/2, circle_width/2 * -1),
+            #            Point(circle_width/2, part_long_length/2 * -1),
+            #            Point(circle_width/2, part_long_length/2)),
+            # # Part B
+            # PartConfig(Point(part_long_length/2, circle_width/2 * -1),
+            #            Point(part_long_length/2 * -1, circle_width/2 * -1),
+            #            Point(circle_width/2 * -1, part_long_length/2 * -1)),
+            # Part C
+            PartConfig(Point(part_long_length/2 * -1, circle_width/2),
+                       Point(circle_width/2 * -1, part_long_length/2),
+                       Point(circle_width/2 * -1, part_long_length/2 * -1)),
+            # Part D
+            PartConfig(Point(part_long_length/2 * -1, circle_width/2),
+                       Point(part_long_length/2, circle_width/2),
+                       Point(circle_width/2, part_long_length/2)),
+        ]
+
+        opc_index = 486 - 162
+        for partConfig in partConfigs:
+            for offset, row in enumerate(['inner', 'middle', 'outer']): #enumerate(['middle']):
+                for subpart, length_type in enumerate(partConfig.length_types()):
+                    led_count = led_counts[length_type][row]
+                    start, end = partConfig.start_end(subpart, led_count)
+                    # print "start:", start.x, start.y, "end:", end.x, end.y
+                    self.add_led_strip(opc_index, led_count,
+                                          start.x, start.y, end.x, end.y,
+                                          (offset-1)*led_length)
+                    opc_index += led_count
         return self
 
 
