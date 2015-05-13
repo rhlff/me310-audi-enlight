@@ -49,6 +49,26 @@ def show_spot():
         time.sleep(0.02)
 
 
+def show_spot_round():
+    world = LEDWorldBuilder().add_octa_circle().build()
+    color = (255, 255, 255)
+    location = ObjectLocation(0, 1.414213562)
+    led_spot = LEDSpot(color, location, 1.0/60 * 20)
+
+    pixels = world.draw([led_spot], 0)
+    client.put_pixels(pixels)
+    client.put_pixels(pixels)
+
+    angle_inc = 1
+    while True:
+        led_spot.location.angle += angle_inc
+        if led_spot.location.angle > 360:
+            led_spot.location.angle
+        pixels = world.draw([led_spot], 0)
+        client.put_pixels(pixels)
+        time.sleep(0.01)
+
+
 def show_wave():
     world = LEDWorldBuilder().add_octa_circle().build()
     color = (150, 0, 0)
@@ -104,13 +124,14 @@ def show_pulsing():
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Interior LED art for ME310 Audi')
-    parser.add_argument('pattern', choices=['off', 'all', 'spot', 'wave', 'drop', 'conDrop', 'puls'])
+    parser.add_argument('pattern', choices=['off', 'all', 'spot', 'spotRound', 'wave', 'drop', 'conDrop', 'puls'])
     args = parser.parse_args()
 
     {
         'all': all_leds_on,
         'off': all_leds_off,
         'spot': show_spot,
+        'spotRound': show_spot_round,
         'wave': show_wave,
         'drop': show_drop,
         'conDrop': show_continuous_drop,
