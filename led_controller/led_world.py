@@ -59,8 +59,8 @@ class LEDWorldBuilder(object):
         """
         if reverse:  # switch start and end point
             start_x, start_y, end_x, end_y = end_x, end_y, start_x, start_y
-        spacing_x = (end_x - start_x) * 1.0 / led_count
-        spacing_y = (end_y - start_y) * 1.0 / led_count
+        spacing_x = (end_x - start_x) * 1.0 / (led_count-1)
+        spacing_y = (end_y - start_y) * 1.0 / (led_count-1)
         for i in xrange(led_count):
             cur_x, cur_y = start_x+i*spacing_x, start_y+i*spacing_y
             angle, distance = angle_and_distance_for_point(cur_x, cur_y)
