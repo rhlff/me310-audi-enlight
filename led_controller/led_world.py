@@ -156,14 +156,14 @@ class LEDWorldBuilder(object):
         }
 
         partConfigs = [
-            # # Part A
-            # PartConfig(Point(part_long_length/2, circle_width/2 * -1),
-            #            Point(circle_width/2, part_long_length/2 * -1),
-            #            Point(circle_width/2, part_long_length/2)),
-            # # Part B
-            # PartConfig(Point(part_long_length/2, circle_width/2 * -1),
-            #            Point(part_long_length/2 * -1, circle_width/2 * -1),
-            #            Point(circle_width/2 * -1, part_long_length/2 * -1)),
+            # Part A
+            PartConfig(Point(part_long_length/2, circle_width/2 * -1),
+                       Point(circle_width/2, part_long_length/2 * -1),
+                       Point(circle_width/2, part_long_length/2)),
+            # Part B
+            PartConfig(Point(part_long_length/2, circle_width/2 * -1),
+                       Point(part_long_length/2 * -1, circle_width/2 * -1),
+                       Point(circle_width/2 * -1, part_long_length/2 * -1)),
             # Part C
             PartConfig(Point(part_long_length/2 * -1, circle_width/2),
                        Point(circle_width/2 * -1, part_long_length/2),
@@ -174,7 +174,7 @@ class LEDWorldBuilder(object):
                        Point(circle_width/2, part_long_length/2)),
         ]
 
-        opc_index = 486 - 162
+        opc_index = 0
         for partConfig in partConfigs:
             for offset, row in enumerate(['inner', 'middle', 'outer']): #enumerate(['middle']):
                 for subpart, length_type in enumerate(partConfig.length_types()):
