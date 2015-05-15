@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block body %}
+    <div class="row">
+        {% for setting in settings %}
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <div class="led-setting">
+                    <input type="checkbox" class="switch" data-name="{{settings.name}}"
+                    {% if setting.activated %}
+                        checked=checked
+                    {% endif %}
+                    >
+                    {% if setting.url %}
+                    <a href="{{ url_for(setting.url) }}">
+                    {% else %}
+                    <a href"#">
+                    {% endif %}
+                        <span>{{ setting.name }}</span>
+                    </a>
+                </div>
+            </div>
+        {% else %}
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <p class="lead">No settings defined</p>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

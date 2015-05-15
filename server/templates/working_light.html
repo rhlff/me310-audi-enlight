@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block body %}
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div class="led-setting">
+                <input type="checkbox" class="switch" data-name="working-light-all">
+                <span>All lights</span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            <div class="led-setting">
+                <input type="checkbox" class="switch" data-name="working-light-front-left">
+                <span>Front left</span>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            <div class="led-setting">
+                <input type="checkbox" class="switch" data-name="working-light-front-right">
+                <span>Front right</span>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            <div class="led-setting">
+                <input type="checkbox" class="switch" data-name="working-light-back-left">
+                <span>Back left</span>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            <div class="led-setting">
+                <input type="checkbox" class="switch" data-name="working-light-back-right">
+                <span>Back right</span>
+            </div>
+        </div>
+    </div>
+{% endblock %}
