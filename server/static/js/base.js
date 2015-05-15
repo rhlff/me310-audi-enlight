@@ -7,9 +7,9 @@
 
   // Listen for the jQuery ready event on the document
   $(function() {
-    console.log('The DOM is ready');
+    // console.log('The DOM is ready');
     // The DOM is ready!
-    // $('.switch').bootstrapSwitch();
+    $('.switch').bootstrapSwitch();
 
     $('.container').on("switchChange.bootstrapSwitch", ".switch", function(event, state) {
       $.post("/toggle", {

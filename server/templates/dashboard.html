@@ -4,7 +4,7 @@
         {% for setting in settings %}
             <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
                 <div class="led-setting">
-                    <input type="checkbox" class="switch" data-name="{{settings.name}}"
+                    <input type="checkbox" class="switch" data-name="{{ setting.name }}"
                     {% if setting.activated %}
                         checked=checked
                     {% endif %}
