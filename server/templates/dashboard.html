@@ -4,12 +4,12 @@
         {% for setting in settings %}
             <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
                 <div class="led-setting">
-                    <input type="checkbox" class="switch" data-name="{{ setting.name }}"
+                    <input type="checkbox" class="switch" data-activate-url="{{ url_for(setting.activate_url) }}"
                     {% if setting.activated %}
                         checked=checked
                     {% endif %}
                     >
-                    {% if setting.url %}
+                    {% if setting.has_page %}
                     <a href="{{ url_for(setting.url) }}">
                     {% else %}
                     <a href"#">

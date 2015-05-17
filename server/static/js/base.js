@@ -12,10 +12,7 @@
     $('.switch').bootstrapSwitch();
 
     $('.container').on("switchChange.bootstrapSwitch", ".switch", function(event, state) {
-      $.post("/toggle", {
-        name: $(this).data('name'),
-        activate: state
-      })
+      $.post($(this).data('activate-url'), { activate: state });
     });
   });
 
