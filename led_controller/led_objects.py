@@ -95,26 +95,54 @@ class LEDSpot(LocatedLEDObject):
     - color
     - location
     - radius of spot
+    - time to appear
+    - time to disappear
     """
-    def __init__(self, color, location, radius):
+    def __init__(self, color, location, radius, time_appear=0.0,
+                 time_disappear=None):
         """
         Keyword arguments:
         color -- the color of the spot
         location -- the location of the spot
         radius -- the radius of the spot (in meters)
+        time_appear -- the time the spot need to appear (in seconds)
+        time_disappear -- the time the needs to time_disappear (in seconds)
         """
+        if time_disappear is not None:
+            assert time_appear > 0.0
         super(LEDSpot, self).__init__(color, location)
         self.radius = radius
+        self.time_appear = time_appear
+        self.time_disappear = time_disappear
 
     def pixel_color(self, led_location, t):
+        time_delta = t - self.creation_time
+        time_diff = time_delta.total_seconds()
+
+        ref_time = time_diff
+        if self.time_appear > 0.0:
+            if self.time_disappear is not None:
+                ref_time = self.time_appear
+                if time_diff > self.time_appear+self.time_disappear:
+                    self.dead = True
+            else:
+                ref_time = max(self.time_appear, time_diff)
+        scale = time_diff/ref_time
+
         offset_x, offset_y = project_to_led(led_location, self.location)
         distance = math.sqrt(offset_x*offset_x + offset_y*offset_y)
 
-        if distance > self.radius:
+        radius = self.radius*scale
+        if distance > radius:
             return None
 
-        brightness_factor = 1 - distance/self.radius
+        brightness_factor = max(0, 1 - distance/radius)
         color = apply_brightness(brightness_factor, *self.color)
+
+        if self.time_disappear is not None:
+            brightness_factor = max(0, 1 - (time_diff-self.time_appear)/self.time_disappear)
+            color = apply_brightness(brightness_factor, *self.color)
+
         return limit_color_values(*color)
 
 

@@ -80,6 +80,24 @@ def show_spot_round():
         time.sleep(0.01)
 
 
+def show_animated_spot():
+    world = LEDWorldBuilder().add_octa_circle().build()
+    color = (237, 183, 21)
+    # location = ObjectLocation(0, 1.5)
+    # led_spot = LEDSpot(color, location, 1.0/60 * 30, 0.25, 0.3)
+    color = (237, 93, 21)
+    location = ObjectLocation(-45, 1.5)
+    led_spot = LEDSpot(color, location, 1.0/60 * 15, 0.25, 0.3)
+
+    symbols = [led_spot]
+    while symbols:
+        now = datetime.now()
+        pixels = world.draw(symbols, now)
+        client.put_pixels(pixels)
+        symbols = [s for s in symbols if not s.dead]
+        time.sleep(0.02)
+
+
 def show_wave():
     world = LEDWorldBuilder().add_octa_circle().build()
     color = (150, 0, 0)
@@ -135,7 +153,7 @@ def show_pulsing():
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Interior LED art for ME310 Audi')
-    parser.add_argument('pattern', choices=['off', 'all', 'spot', 'spotRound', 'wave', 'drop', 'conDrop', 'puls', 'workingLight'])
+    parser.add_argument('pattern', choices=['off', 'all', 'spot', 'spotRound', 'wave', 'drop', 'conDrop', 'puls', 'workingLight', 'aniSpot'])
     args = parser.parse_args()
 
     {
@@ -148,4 +166,5 @@ if __name__ == '__main__':
         'conDrop': show_continuous_drop,
         'puls': show_pulsing,
         'workingLight': working_light,
+        'aniSpot': show_animated_spot,
     }[args.pattern]()
