@@ -27,11 +27,7 @@ class LEDController(threading.Thread):
         self.client.put_pixels([(0, 0, 0,)] * self.world.led_count)
 
     def add_symbol(self, symbol):
-        print symbol
         self.symbols.append(symbol)
 
     def remove_symbol(self, symbol):
-        print self.symbols
-        print symbol
-        print "is in symbols", (symbol in self.symbols)
         symbol.dead = True

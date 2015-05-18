@@ -83,11 +83,8 @@ def show_spot_round():
 def show_animated_spot():
     world = LEDWorldBuilder().add_octa_circle().build()
     color = (237, 183, 21)
-    # location = ObjectLocation(0, 1.5)
-    # led_spot = LEDSpot(color, location, 1.0/60 * 30, 0.25, 0.3)
-    color = (237, 93, 21)
-    location = ObjectLocation(-45, 1.5)
-    led_spot = LEDSpot(color, location, 1.0/60 * 15, 0.25, 0.3)
+    location = ObjectLocation(0, 1.5)
+    led_spot = LEDSpot(color, location, 1.0/60 * 30, 0.25, 0.3)
 
     symbols = [led_spot]
     while symbols:

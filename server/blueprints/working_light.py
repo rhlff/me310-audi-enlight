@@ -18,7 +18,6 @@ working_light_led = None
 
 def toggle_working_light(activate):
     global working_light_led
-    print "toggle_working_light", activate
     if activate:
         if working_light_led is None:
             color = (237, 183, 21)

@@ -18,7 +18,6 @@ for bp in blueprints:
 @app.route('/')
 def dashboard():
     settings = map(lambda bp: bp.as_json(), blueprints)
-    print settings
     return render_template('dashboard.html', settings=settings)
 
 

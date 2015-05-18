@@ -2,7 +2,7 @@ from flask import render_template, abort, request
 from jinja2 import TemplateNotFound
 
 from led_controller.led_world import ObjectLocation
-from led_controller.led_objects import LEDContinuousDrop
+from led_controller.led_objects import LEDSpot
 from server.blueprints import SettingsBlueprint
 from server.leds import get_led_controller
 
@@ -29,10 +29,20 @@ def activate():
 
 @beat_detection.route('/beat', methods=['POST'])
 def receive_beat():
-    if beat_detection.activated and float(request.form['energy']) > 1.5:
-        location = ObjectLocation(0, 0.5)
-        color = (52, 141, 151)
-        led_drop = LEDContinuousDrop(color, location, 0.75, period=0.1,
-                                     end_after=1)
-        get_led_controller().add_symbol(led_drop)
+    energy = float(request.form['energy'])
+    if beat_detection.activated:
+        if energy > 2.0:
+            color = (237, 183, 21)
+            location = ObjectLocation(0, 1.5)
+            led_spot = LEDSpot(color, location, 1.0/60 * 30, 0.35, 0.75)
+            get_led_controller().add_symbol(led_spot)
+        elif energy > 1.0:
+            color = (191, 75, 17)
+            location = ObjectLocation(-45, 1.0)
+            led_spot1 = LEDSpot(color, location, 1.0/60 * 15, 0.25, 0.25)
+            location = ObjectLocation(45, 1.0)
+            led_spot2 = LEDSpot(color, location, 1.0/60 * 15, 0.25, 0.25)
+            get_led_controller().add_symbol(led_spot1)
+            get_led_controller().add_symbol(led_spot2)
+
     return ('', 204)
