@@ -19,6 +19,18 @@ class LEDObject(object):
     def pixel_color(self, led_location, t):
         raise NotImplementedError('subclasses of LEDObject must provide a pixel_color() method')
 
+    def animations(self):
+        return {
+            'color': (self.color, self.animate_color),
+        }
+
+    def animate_color(self, start_value, end_value, current_time, duration):
+        progress = max(0, min(1, current_time/duration))
+        r = (end_value[0]-start_value[0])*progress + start_value[0]
+        g = (end_value[1]-start_value[1])*progress + start_value[1]
+        b = (end_value[2]-start_value[2])*progress + start_value[2]
+        self.color = (r, g, b)
+
 
 class UnlocatedLEDObject(LEDObject):
     pass
@@ -32,6 +44,29 @@ class LocatedLEDObject(LEDObject):
         """
         super(LocatedLEDObject, self).__init__(color)
         self.location = location
+
+    def animations(self):
+        animations = super(LocatedLEDObject, self).animations()
+        animations.update({
+            'location': (self.location, self.animate_location),
+            'location_r': (self.location, self.animate_location_reverse),
+        })
+        return animations
+
+    def animate_location(self, start_val, end_val, current_time,
+                         duration, reverse=False):
+        progress = max(0, min(1, current_time/duration))
+        angle_diff = (end_val.angle-start_val.angle)%360
+        angle_diff = angle_diff-360 if reverse else angle_diff
+        angle = angle_diff*progress + start_val.angle
+        distance = (end_val.distance-start_val.distance)*progress \
+                    + start_val.distance
+        self.location.angle = angle
+        self.location.distance = distance
+
+    def animate_location_reverse(self, start_val, end_val, current_time,
+                                 duration):
+        self.animate_location(start_val, end_value, current_time, duration)
 
 
 class LEDAll(UnlocatedLEDObject):
