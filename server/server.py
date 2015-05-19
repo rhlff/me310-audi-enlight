@@ -5,12 +5,14 @@ import sys
 from leds import teardown_led_controller
 from blueprints.working_light import working_light
 from blueprints.beat_detection import beat_detection
-
+from blueprints.bike import testing_bike
+from blueprints.parking import testing_parking
+from blueprints.alarm import testing_alarm
 
 app = Flask(__name__)
 
 
-blueprints = [working_light, beat_detection]
+blueprints = [working_light, beat_detection, testing_bike, testing_parking, testing_alarm]
 for bp in blueprints:
     app.register_blueprint(bp, url_prefix=bp.url_prefix)
 
