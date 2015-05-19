@@ -66,7 +66,7 @@ class LocatedLEDObject(LEDObject):
 
     def animate_location_reverse(self, start_val, end_val, current_time,
                                  duration):
-        self.animate_location(start_val, end_value, current_time, duration)
+        self.animate_location(start_val, end_val, current_time, duration, True)
 
 
 class LEDAll(UnlocatedLEDObject):

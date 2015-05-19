@@ -23,6 +23,6 @@ def dashboard():
 
 # teardown method
 def signal_handler(signal, frame):
-        teardown_led_controller()
-        sys.exit(0)
+    teardown_led_controller()
+    sys.exit(0)
 signal.signal(signal.SIGINT, signal_handler)
