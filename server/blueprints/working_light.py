@@ -24,6 +24,8 @@ def toggle_working_light(activate):
             location = ObjectLocation(-45, 90)
             working_light_led = LEDSpot(color, location, 120)
             get_led_controller().add_symbol(working_light_led)
+            get_led_controller().add_animation(working_light_led, 'color', (200, 200, 200,), 4.0)
+            get_led_controller().add_animation(working_light_led, 'location', ObjectLocation(45, 180), 4.0)
     else:
         if working_light_led is not None:
             get_led_controller().remove_symbol(working_light_led)
