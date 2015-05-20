@@ -16,32 +16,41 @@ testing_parking = SettingsBlueprint('testing-parking', __name__,
 def show_ped_1():
     color = (237, 183, 21)
     location = ObjectLocation(15, 20)
-    spot = LEDSpot(color, location, 2)
+    spot = LEDSpot((0, 0, 0,), location, 2)
     get_led_controller().add_symbol(spot)
     get_led_controller().add_animation(spot, 'location_r', ObjectLocation(-45, 10.0), 10.166)
-    time.sleep(10.166)
+    get_led_controller().add_animation(spot, 'color', color, 0.5)
+    time.sleep(10.166-0.5)
+    get_led_controller().add_animation(spot, 'color', (0, 0, 0,), 0.5)
+    time.sleep(0.5)
     spot.dead = True
 
 def show_ped_2():
     time.sleep(7.666)
     color = (237, 183, 21)
     location = ObjectLocation(45, 10)
-    spot = LEDSpot(color, location, 2.0)
+    spot = LEDSpot((0, 0, 0,), location, 2.0)
     get_led_controller().add_symbol(spot)
     get_led_controller().add_animation(spot, 'location_r', ObjectLocation(-90, 5.0), 4.5)
-    time.sleep(4.5)
+    get_led_controller().add_animation(spot, 'color', color, 0.5)
+    time.sleep(4.5-0.5)
+    get_led_controller().add_animation(spot, 'color', (0, 0, 0,), 0.5)
+    time.sleep(0.5)
     spot.dead = True
 
 def show_car_1():
     time.sleep(33.166)
     color = (255, 0, 0)
     location = ObjectLocation(10, 10)
-    spot = LEDSpot(color, location, 2.0)
+    spot = LEDSpot((0, 0, 0,), location, 2.0)
     get_led_controller().add_symbol(spot)
     get_led_controller().add_animation(spot, 'location_r', ObjectLocation(-90, 2.0), 6.166)
+    get_led_controller().add_animation(spot, 'color', color, 0.5)
     time.sleep(6.166)
     get_led_controller().add_animation(spot, 'location_r', ObjectLocation(-160, 10.0), 2.333)
-    time.sleep(2.333)
+    time.sleep(2.333-0.5)
+    get_led_controller().add_animation(spot, 'color', (0, 0, 0,), 0.5)
+    time.sleep(0.5)
     spot.dead = True
 
 
