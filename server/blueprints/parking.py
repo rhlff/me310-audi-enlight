@@ -13,8 +13,14 @@ testing_parking = SettingsBlueprint('testing-parking', __name__,
                                   url_prefix='/parking',
                                   template_folder='templates')
 
+Color_Default = (255, 255, 255)
+Color_People = (255,  245, 191)
+Color_Bike = (255, 235, 127)
+Color_Car = (255, 226, 64)
+Color_Danger = (255, 80, 80)
+
 def show_ped_1():
-    color = (237, 183, 21)
+    color = Color_People #(237, 183, 21)
     location = ObjectLocation(15, 20)
     spot = LEDSpot((0, 0, 0,), location, 2)
     get_led_controller().add_symbol(spot)
@@ -26,8 +32,8 @@ def show_ped_1():
     spot.dead = True
 
 def show_ped_2():
-    time.sleep(7.666)
-    color = (237, 183, 21)
+    time.sleep(8.433)
+    color = Color_People #(237, 183, 21)
     location = ObjectLocation(45, 10)
     spot = LEDSpot((0, 0, 0,), location, 2.0)
     get_led_controller().add_symbol(spot)
@@ -39,8 +45,8 @@ def show_ped_2():
     spot.dead = True
 
 def show_car_1():
-    time.sleep(33.166)
-    color = (255, 0, 0)
+    time.sleep(34.166)
+    color = Color_Car #(255, 0, 0)
     location = ObjectLocation(10, 10)
     spot = LEDSpot((0, 0, 0,), location, 2.0)
     get_led_controller().add_symbol(spot)
@@ -55,7 +61,7 @@ def show_car_1():
 
 
 def show_parking():
-    thread.start_new_thread(show_ped_1, ())
+    # thread.start_new_thread(show_ped_1, ())
     thread.start_new_thread(show_ped_2, ())
     thread.start_new_thread(show_car_1, ())
 

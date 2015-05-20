@@ -13,14 +13,21 @@ testing_bike = SettingsBlueprint('testing-bike', __name__,
                                   url_prefix='/bike',
                                   template_folder='templates')
 
+Color_Default = (255, 255, 255)
+Color_People = (255,  245, 191)
+Color_Bike = (255, 235, 127)
+Color_Car = (255, 226, 64)
+Color_Danger = (255, 80, 80)
+
 def show_ped_1():
-    color = (237, 183, 21)
+    time.sleep(1.0)
+    color = Color_People #(237, 183, 21)
     location = ObjectLocation(-30, 15)
     spot = LEDSpot((0, 0, 0,), location, 2)
     get_led_controller().add_symbol(spot)
-    get_led_controller().add_animation(spot, 'location_r', ObjectLocation(-90, 5), 6.0)
+    get_led_controller().add_animation(spot, 'location_r', ObjectLocation(-90, 5), 5.0)
     get_led_controller().add_animation(spot, 'color', color, 0.5)
-    time.sleep(6.0)
+    time.sleep(5.0)
     get_led_controller().add_animation(spot, 'location_r', ObjectLocation(-190, 15), 5.0)
     time.sleep(5.0-0.5)
     get_led_controller().add_animation(spot, 'color', (0, 0, 0,), 0.5)
@@ -29,14 +36,14 @@ def show_ped_1():
 
 def show_car_1():
     time.sleep(15.0)
-    color = (255, 0, 0)
-    location = ObjectLocation(-10, 25)
+    color = Color_Car #(255, 0, 0)
+    location = ObjectLocation(-30, 25)
     spot = LEDSpot((0, 0, 0,), location, 2)
     get_led_controller().add_symbol(spot)
     get_led_controller().add_animation(spot, 'location_r', ObjectLocation(-90, 3), 2.0)
     get_led_controller().add_animation(spot, 'color', color, 0.5)
     time.sleep(2.0)
-    get_led_controller().add_animation(spot, 'location_r', ObjectLocation(-170, 25), 2.0)
+    get_led_controller().add_animation(spot, 'location_r', ObjectLocation(-150, 25), 2.0)
     time.sleep(2.0-0.5)
     get_led_controller().add_animation(spot, 'color', (0, 0, 0,), 0.5)
     time.sleep(0.5)
@@ -44,7 +51,7 @@ def show_car_1():
 
 def show_bike_1():
     time.sleep(17.0)
-    color = (0, 0, 255)
+    color = Color_Bike #(0, 0, 255)
     location = ObjectLocation(5, 25)
     spot = LEDSpot((0, 0, 0,), location, 2)
     get_led_controller().add_symbol(spot)
@@ -55,15 +62,15 @@ def show_bike_1():
     time.sleep(3.0)
     get_led_controller().add_animation(spot, 'location_r', ObjectLocation(90, 2), 3.333)
     time.sleep(3.333)
-    get_led_controller().add_animation(spot, 'location_r', ObjectLocation(0, 10), 3.0)
-    time.sleep(3.0-0.5)
+    get_led_controller().add_animation(spot, 'location_r', ObjectLocation(0, 10), 4.0)
+    time.sleep(4.0-0.5)
     get_led_controller().add_animation(spot, 'color', (0, 0, 0,), 0.5)
     time.sleep(0.5)
     spot.dead = True
 
 def show_bike_2():
-    time.sleep(35.0)
-    color = (0, 0, 255)
+    time.sleep(35.5)
+    color = Color_Bike #(0, 0, 255)
     location = ObjectLocation(45, 10)
     spot = LEDSpot((0, 0, 0,), location, 2)
     get_led_controller().add_symbol(spot)
@@ -77,12 +84,12 @@ def show_bike_2():
     spot.dead = True
 
 def show_ped_2():
-    time.sleep(35.0)
-    color = (237, 183, 21)
+    time.sleep(35.5)
+    color = Color_People #(237, 183, 21)
     location = ObjectLocation(80, 10)
     spot = LEDSpot((0, 0, 0,), location, 2)
     get_led_controller().add_symbol(spot)
-    get_led_controller().add_animation(spot, 'location_r', ObjectLocation(15, 5), 2.0)
+    get_led_controller().add_animation(spot, 'location_r', ObjectLocation(30, 5), 2.0)
     get_led_controller().add_animation(spot, 'color', color, 0.5)
     time.sleep(2.0)
     get_led_controller().add_animation(spot, 'location', ObjectLocation(90, 2), 1.333)
