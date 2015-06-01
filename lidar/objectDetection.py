@@ -3,44 +3,23 @@ import lidar as lidarModule
 import livePlot
 import sys
 
-# from random import randint
-# step = 1
-# valueStepper = 1
-
-# def getFakeData():
-#     global step, valueStepper
-
-#     if step == 99 or step == 0:
-#         valueStepper *= -1
-
-#     step += valueStepper
-#     # value = randint(100, 600)
-#     value = 110
-
-#     return "%i %i" % (step, value)
-
-def funcOrZero(x):
-    if len(x) >= 3:
-        return np.min(x)
-    else:
-        print 'unusable'
-        return 0
+NUMBER_OF_VALUES = 99
+NUMBER_OF_MINIMUM_VALUES_PER_AREA = 10
 
 def enoughScans(values, numberOfScans):
-    sys.stdout.write("### Still waiting for %d areas to have enough values \r ###" % (len(filter(lambda x: len(x) < numberOfScans, values))) )
+    numberOfMissingAreas = len(filter(lambda x: len(x) < numberOfScans, values))
+
+    sys.stdout.write("### Still waiting for %d areas to have enough values \r ###" % ( numberOfMissingAreas ))
     sys.stdout.flush()
 
-    if len(filter(lambda x: len(x) < numberOfScans, values)) == 2:
-        print filter(lambda x: len(x) < numberOfScans, values)
-
-    return False if len(filter(lambda x: len(x) < numberOfScans, values)) > 0 else True
+    return False if numberOfMissingAreas > 0 else True
 
 
 lidar = lidarModule.Lidar()
-graph = livePlot.LivePlot(99)
+graph = livePlot.LivePlot(NUMBER_OF_VALUES)
 
 values = []
-for i in range(99):
+for i in range(NUMBER_OF_VALUES):
     values.append([])
 
 stepNumber, distance = lidar.getData()
@@ -51,7 +30,7 @@ print '### Step is a 0 now ###'
 
 lidar.resetDataCount()
 
-while not enoughScans(values, 10):
+while not enoughScans(values, NUMBER_OF_MINIMUM_VALUES_PER_AREA):
     stepNumber, distance = lidar.getData()
     values[stepNumber].append(distance)
 
@@ -63,9 +42,10 @@ print '### MAX ###'
 print map(np.max, values)
 print '### STD ###'
 print map(np.std, values)
-stdValues = map(np.std, values)
-minValues = map(funcOrZero, values)
+print '###########'
 
+stdValues = map(np.std, values)
+minValues = map(np.min, values)
 
 while True:
     stepNumber, distance = lidar.getData()
