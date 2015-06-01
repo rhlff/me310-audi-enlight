@@ -66,7 +66,7 @@ def show_spot_round():
     location = ObjectLocation(0, 1.414213562)
     led_spot = LEDSpot(color, location, 1.0/60 * 20)
 
-    pixels = world.draw([led_spot], 0)
+    pixels = world.draw([led_spot], datetime.now())
     client.put_pixels(pixels)
     client.put_pixels(pixels)
 
@@ -75,7 +75,7 @@ def show_spot_round():
         led_spot.location.angle += angle_inc
         if led_spot.location.angle > 360:
             led_spot.location.angle
-        pixels = world.draw([led_spot], 0)
+        pixels = world.draw([led_spot], datetime.now())
         client.put_pixels(pixels)
         time.sleep(0.01)
 
