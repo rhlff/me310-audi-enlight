@@ -7,7 +7,7 @@ from datetime import datetime
 import argparse
 
 FC_SERVER = '172.16.20.233:7890'
-# FC_SERVER = '192.168.2.1:7890'
+FC_SERVER = '192.168.2.1:7890'
 client = opc.Client(FC_SERVER)
 
 
@@ -26,7 +26,7 @@ def working_light():
     location = ObjectLocation(-45, 90)
     led_spot = LEDSpot(color, location, 120)
 
-    pixels = world.draw([led_spot], 0)
+    pixels = world.draw([led_spot], datetime.now())
     client.put_pixels(pixels)
     client.put_pixels(pixels)
 

@@ -1,6 +1,8 @@
 from flask import Blueprint, render_template, abort
 from jinja2 import TemplateNotFound
 
+import threading
+from datetime import datetime
 
 class SettingsBlueprint(Blueprint):
     def __init__(self, *args, **kwargs):
@@ -23,3 +25,19 @@ class SettingsBlueprint(Blueprint):
             'activated': self.activated,
             'has_page': self.has_page,
         }
+
+class StoppableThread(threading.Thread):
+    def __init__(self, actions):
+        super(StoppableThread, self).__init__()
+        self.actions = sorted(actions, key=lambda x: x[0])
+        self.start_time = datetime.now()
+        self.stopped = False
+
+    def run(self):
+        while not self.stopped:
+            diff = (datetime.now() - self.start_time).totalSeconds()
+            while self.actions and self.actions[0] <= diff and not self.stopped:
+                action = self.actions[0]
+                action[1](*(action[2]))
+                self.actions.pop(0)
+

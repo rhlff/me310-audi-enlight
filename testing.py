@@ -8,10 +8,18 @@ import time
 import opc
 
 FC_SERVER = '172.16.20.233:7890'
-# FC_SERVER = '192.168.2.1:7890'
+FC_SERVER = '192.168.2.1:7890'
 client = opc.Client(FC_SERVER)
 
 START_ANGLE = 40
+
+
+
+Color_Default = (255, 255, 255)
+Color_People = (255,  245, 191)
+Color_Bike = (255, 235, 127)
+Color_Car = (255, 226, 64)
+Color_Danger = (255, 80, 80)
 
 
 class curses_screen:
@@ -127,9 +135,9 @@ class TestingMode4(TestingMode):
 
 class TestingMode5(BaseTestingMode):
     def create(self):
-        color = (128, 255, 128)
+        color = Color_Car  #(128, 255, 128)
         location = ObjectLocation(START_ANGLE, 1.414213562)
-        self.spot = LEDContinuousDrop(color, location, 1.0, 0.25, 0.05)
+        self.spot = LEDSpot(color, location, 1.0/60 * 20 * 2)
         self.symbols.append(self.spot)
 
 

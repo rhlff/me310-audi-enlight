@@ -4,7 +4,7 @@ import opc
 
 
 FC_SERVER = '172.16.20.233:7890'
-# FC_SERVER = '192.168.2.1:7890'
+FC_SERVER = '192.168.2.1:7890'
 
 led_controller = None
 
