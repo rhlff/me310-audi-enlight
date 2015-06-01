@@ -12,17 +12,13 @@ class Lidar(object):
         self.avoidJunkValue()
 
     def avoidJunkValue(self):
-        print self.connection.readline()
+        self.connection.readline()
 
     def getData(self):
         data = self.connection.readline().split(' ')
-        # while len(data) <> 2 or data[0] == '':
-        #     data = self.connection.readline().split(' ')
 
         while len(data) <> 2 or data[0] == '' or int(data[0]) == self.lastStep or int(data[1]) < 0 or int(data[1]) > 1000:
             data = self.connection.readline().split(' ')
-            # if len(data) <> 2 or data[0] == '':
-                # continue
 
         stepNumber = int(data[0])
 
