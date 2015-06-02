@@ -2,6 +2,7 @@ import numpy as np
 import lidar as lidarModule
 import livePlot
 import helper as h
+import pickle
 
 NUMBER_OF_VALUES = 99
 NUMBER_OF_MINIMUM_VALUES_PER_AREA = 10
@@ -22,11 +23,7 @@ print '### Step is at 0 now ###'
 
 lidar.resetDataCount()
 
-while not h.enoughScans(values, NUMBER_OF_MINIMUM_VALUES_PER_AREA):
-    stepNumber, distance = lidar.getData()
-    values[stepNumber].append(distance)
-
-    graph.refresh(stepNumber, distance)
+values = pickle.load(open("scan5MinimumValues", "rb" ))
 
 print '### MIN ###'
 print map(np.min, values)
@@ -41,6 +38,7 @@ minValues = map(np.min, values)
 
 while True:
     stepNumber, distance = lidar.getData()
+    graph.refresh(stepNumber, distance)
     if abs(minValues[stepNumber] - distance) > 50:
         if stdValues[stepNumber] < 40:
-            print "Detected object at angle %f" % (stepNumber * 1.8)
+            print "Detected object at angle %f with a distance of %i" % (stepNumber * 1.8, distance)

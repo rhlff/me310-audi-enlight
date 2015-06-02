@@ -13,7 +13,7 @@ class LivePlot(object):
         self.line, = self.ax.plot(self.ydata)
         self.line.set_xdata(np.arange(0, 2.95, 0.03))
 
-        plt.ylim([0, 1000])
+        plt.ylim([0, 700])
 
     def refresh(self, x, y):
         self.counter += 1

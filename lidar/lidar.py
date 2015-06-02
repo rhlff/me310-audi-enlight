@@ -7,7 +7,7 @@ class Lidar(object):
         self.lastStep = -1
         self.dataCollected = 0
 
-        self.connection = serial.Serial('/dev/tty.usbmodem1421', 119200)
+        self.connection = serial.Serial('/dev/tty.usbmodem1411', 119200)
         time.sleep(2.0)
         self.avoidJunkValue()
 
@@ -17,16 +17,19 @@ class Lidar(object):
     def getData(self):
         data = self.connection.readline().split(' ')
 
-        while len(data) <> 2 or data[0] == '' or int(data[0]) == self.lastStep or int(data[1]) < 0 or int(data[1]) > 1000:
+        while len(data) <> 2 or data[0] == '' or int(data[0]) == self.lastStep or int(data[1]) < 0:
             data = self.connection.readline().split(' ')
 
         stepNumber = int(data[0])
+        distance = int(data[1])
+
+        distance = distance if distance <= 650 else 650
 
         self.lastStep = stepNumber
 
         self.dataCollected += 1
 
-        return stepNumber, int(data[1])
+        return stepNumber, distance
 
     def resetDataCount(self):
         self.dataCollected = 0
