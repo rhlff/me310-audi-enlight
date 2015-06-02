@@ -11,6 +11,7 @@ from blueprints.bike import testing_bike
 from blueprints.parking import testing_parking
 from blueprints.alarm import testing_alarm
 from blueprints.emergency import emergency
+from blueprints.object import object_detection
 import thread
 import time
 
@@ -18,7 +19,7 @@ import time
 app = Flask(__name__)
 
 
-blueprints = [working_light, beat_detection, testing_bike, testing_parking, testing_alarm, emergency]
+blueprints = [working_light, beat_detection, testing_bike, testing_parking, testing_alarm, emergency, object_detection]
 for bp in blueprints:
     app.register_blueprint(bp, url_prefix=bp.url_prefix)
 
