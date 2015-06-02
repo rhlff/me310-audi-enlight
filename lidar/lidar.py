@@ -7,7 +7,7 @@ class Lidar(object):
         self.lastStep = -1
         self.dataCollected = 0
 
-        self.connection = serial.Serial('/dev/tty.usbmodem1411', 119200)
+        self.connection = serial.Serial('/dev/ttyACM0', 115200)
         time.sleep(2.0)
         self.avoidJunkValue()
 
