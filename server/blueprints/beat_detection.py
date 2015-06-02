@@ -30,19 +30,39 @@ def activate():
 @beat_detection.route('/beat', methods=['POST'])
 def receive_beat():
     energy = float(request.form['energy'])
+    brightness = 0.5
     if beat_detection.activated:
         if energy > 2.0:
-            color = (237, 183, 21)
-            location = ObjectLocation(0, 1.5)
-            led_spot = LEDSpot(color, location, 1.0/60 * 30, 0.35, 0.75)
-            get_led_controller().add_symbol(led_spot)
+            color = map(lambda x: brightness*x, (237, 183, 21))
+            distance = 1.5
+            size = 1.0/60 * 30
+            appear = 0.25
+            disappear = 0.25
+            angles = [0, 180]
+            for angle in angles:
+                location = ObjectLocation(angle, distance)
+                led_spot = LEDSpot(color, location, size, appear, disappear)
+                get_led_controller().add_symbol(led_spot)
         elif energy > 1.0:
-            color = (191, 75, 17)
-            location = ObjectLocation(-45, 1.0)
-            led_spot1 = LEDSpot(color, location, 1.0/60 * 15, 0.25, 0.25)
-            location = ObjectLocation(45, 1.0)
-            led_spot2 = LEDSpot(color, location, 1.0/60 * 15, 0.25, 0.25)
-            get_led_controller().add_symbol(led_spot1)
-            get_led_controller().add_symbol(led_spot2)
-
+            color = map(lambda x: brightness*x, (191, 115, 77))
+            distance = 1.0
+            size = 1.0/60 * 15
+            appear = 0.25
+            disappear = 0.25
+            angles = [-35, 35, 145, -145]
+            for angle in angles:
+                location = ObjectLocation(angle, distance)
+                led_spot = LEDSpot(color, location, size, appear, disappear)
+                get_led_controller().add_symbol(led_spot)
+        elif energy > 0.35:
+            color = map(lambda x: brightness*x, (214, 149, 49))
+            distance = 1.0
+            size = 1.0/60 * 7.5
+            appear = 0.25
+            disappear = 0.25
+            angles = [-70, 70, 110, -110]
+            for angle in angles:
+                location = ObjectLocation(angle, distance)
+                led_spot = LEDSpot(color, location, size, appear, disappear)
+                get_led_controller().add_symbol(led_spot)
     return ('', 204)
