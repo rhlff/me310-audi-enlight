@@ -12,10 +12,13 @@ class LEDController(threading.Thread):
         self.stopped = False
         self.symbols = []
         self.animations = {}
+        self.symbol_lock = threading.Lock()
 
     def run(self):
         while not self.stopped:
+            self.symbol_lock.acquire()
             self.symbols[:] = [s for s in self.symbols if not s.dead]
+            self.symbol_lock.release()
             now = datetime.now()
             pixels = self.world.draw(self.symbols, now)
             self.client.put_pixels(pixels)
@@ -30,7 +33,10 @@ class LEDController(threading.Thread):
         self.client.put_pixels([(0, 0, 0,)] * self.world.led_count)
 
     def add_symbol(self, symbol):
+        self.symbol_lock.acquire()
+        symbol.dead = False
         self.symbols.append(symbol)
+        self.symbol_lock.release()
 
     def remove_symbol(self, symbol):
         symbol.dead = True
