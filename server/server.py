@@ -4,7 +4,7 @@ import sys
 
 from leds import get_led_controller, teardown_led_controller
 from led_controller.led_world import ObjectLocation
-from led_controller.led_objects import LEDSpot
+from led_controller.led_objects import LEDSpot, LEDRainbow
 from blueprints.working_light import working_light
 from blueprints.beat_detection import beat_detection
 from blueprints.bike import testing_bike
@@ -50,6 +50,11 @@ def play_start_sequence():
 def all_leds_off():
     get_led_controller().off()
 
+
+def show_rainbow():
+    rainbow = LEDRainbow((0,0,0), 5)
+    get_led_controller().add_symbol(rainbow)
+
 @app.route('/')
 def dashboard():
     settings = map(lambda bp: bp.as_json(), blueprints)
@@ -60,13 +65,28 @@ def dashboard():
 def start():
     activated = (request.form['activate'] == 'true')
     if activated:
-        print "start seq"
         thread.start_new_thread(play_start_sequence, ())
     else:
-        print "led off"
         all_leds_off()
     return ('', 204)
 
+rainbow = None
+
+@app.route('/rainbow', methods=['POST'])
+def rainbow():
+    global rainbow
+    activated = (request.form['activate'] == 'true')
+    if activated:
+        if rainbow is None:
+            print "start rainbow"
+            rainbow = LEDRainbow((0,0,0), 5)
+            get_led_controller().add_symbol(rainbow)
+    else:
+        if rainbow is not None:
+            print "remove rainbow"
+            get_led_controller().remove_symbol(rainbow)
+            rainbow = None
+    return ('', 204)
 
 # teardown method
 def signal_handler(signal, frame):
