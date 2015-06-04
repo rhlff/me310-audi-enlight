@@ -37,3 +37,22 @@ def angle_and_distance_for_point(x, y):
     distance = math.sqrt(x*x + y*y)
     angle = math.copysign(math.degrees(math.acos(y/distance)), x)
     return angle, distance
+
+
+def hsv_to_rgb(h, s, v):
+    i = math.floor(h*6)
+    f = h*6 - i
+    p = v * (1-s)
+    q = v * (1-f*s)
+    t = v * (1-(1-f)*s)
+
+    r, g, b = [
+        (v, t, p),
+        (q, v, p),
+        (p, v, t),
+        (p, q, v),
+        (t, p, v),
+        (v, p, q),
+    ][int(i%6)]
+
+    return r, g, b

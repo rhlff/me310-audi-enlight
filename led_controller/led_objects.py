@@ -2,7 +2,7 @@ import math
 from datetime import datetime
 
 from led_controller.led_helper import (
-    apply_brightness, project_to_led, limit_color_values
+    apply_brightness, project_to_led, limit_color_values, hsv_to_rgb
 )
 
 
@@ -266,3 +266,16 @@ class LEDContinuousDrop(LocatedLEDObject):
 
         brightness_factor = 0.5*(math.cos(self.period*distance+(-1.0*time_diff-1.5)*math.pi)*decrease_factor+decrease_factor)
         return apply_brightness(brightness_factor*1.5, *self.color)
+
+
+class LEDRainbow(UnlocatedLEDObject):
+    def __init__(self, color, speed):
+        super(LEDRainbow, self).__init__(color)
+        self.speed = speed
+
+    def pixel_color(self, led_location, t):
+        time_delta = (t - self.creation_time)
+        offset = time_delta.total_seconds()/self.speed*360
+        v = ((led_location.angle+offset) % 360)*1.0/360
+        color = map(lambda x: x*255, hsv_to_rgb(v, 1.0, 1.0))
+        return apply_brightness(1.0, *color)
