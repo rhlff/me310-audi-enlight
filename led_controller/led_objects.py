@@ -150,6 +150,17 @@ class LEDSpot(LocatedLEDObject):
         self.time_appear = time_appear
         self.time_disappear = time_disappear
 
+    def animations(self):
+        animations = super(LEDSpot, self).animations()
+        animations.update({
+            'radius': (self.radius, self.animate_radius),
+        })
+        return animations
+
+    def animate_radius(self, start_value, end_value, current_time, duration):
+        progress = max(0, min(1, current_time/duration))
+        self.radius = (end_value-start_value)*progress + start_value
+
     def pixel_color(self, led_location, t):
         time_delta = t - self.creation_time
         time_diff = time_delta.total_seconds()
