@@ -26,23 +26,26 @@ for bp in blueprints:
 
 def play_start_sequence():
     color = (255, 226, 64)
-    location_1 = ObjectLocation(1, 15)
+    location_1 = ObjectLocation(-179, 15)
     spot_1 = LEDSpot((0, 0, 0,), location_1, 2)
-    location_2 = ObjectLocation(-1, 15)
+    location_2 = ObjectLocation(179, 15)
     spot_2 = LEDSpot((0, 0, 0,), location_2, 2)
+    final_radius = 75
     get_led_controller().add_symbol(spot_1)
     get_led_controller().add_symbol(spot_2)
     get_led_controller().add_animation(spot_1, 'color', color, 0.5)
     get_led_controller().add_animation(spot_2, 'color', color, 0.5)
-    get_led_controller().add_animation(spot_1, 'location', ObjectLocation(0, 15), 3.0)
-    get_led_controller().add_animation(spot_2, 'location_r', ObjectLocation(0, 15), 3.0)
-    time.sleep(3.0-0.5)
+    get_led_controller().add_animation(spot_1, 'location', ObjectLocation(-45, 15), 2.5)
+    get_led_controller().add_animation(spot_2, 'location_r', ObjectLocation(45, 15), 2.5)
+    time.sleep(0.5)
+    get_led_controller().add_animation(spot_1, 'radius', final_radius, 2.0)
+    get_led_controller().add_animation(spot_2, 'radius', final_radius, 2.0)
+    time.sleep(2.0)
     get_led_controller().add_animation(spot_1, 'color', (0, 0, 0,), 0.5)
     get_led_controller().add_animation(spot_2, 'color', (0, 0, 0,), 0.5)
     time.sleep(0.5)
     spot_1.dead = True
     spot_2.dead = True
-
 
 def all_leds_off():
     get_led_controller().off()
