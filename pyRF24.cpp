@@ -21,8 +21,6 @@ std::string read_wrap2(RF24& ref)
 {
     uint32_t data[2];
     ref.read(data, sizeof(data));
-    // std::string str(buf, maxlen<ref.getPayloadSize()?maxlen:ref.getPayloadSize());
-    // delext
     if (data[1] > 9999)
         data[1] = 9999;
     if (data[0] > 98)
