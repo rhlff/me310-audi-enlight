@@ -12,6 +12,8 @@ import numpy as np
 import lidar.lidar as lidarModule
 import pickle
 
+# The out-commented code is for a more dynamic distance model. The currently used one is based on hard-coded EXPE values
+
 class ObjectDetection(threading.Thread):
     def __init__(self):
         super(ObjectDetection, self).__init__()
@@ -22,14 +24,12 @@ class ObjectDetection(threading.Thread):
         NUMBER_OF_MINIMUM_VALUES_PER_AREA = 10
 
         lidar = lidarModule.Lidar()
-        # graph = livePlot.LivePlot(NUMBER_OF_VALUES)
 
-        values = []
+        # values = []
         spots = []
         for i in range(NUMBER_OF_VALUES):
-            values.append([])
-            spots.append({'active': False, 'spot': LEDSpot(Color_People, ObjectLocation(i * 1.65, 2), 0.3)})
-            # get_led_controller().add_symbol(spots[i])
+            # values.append([])
+            spots.append({'active': False, 'spot': LEDSpot(Color_Bike, ObjectLocation(i * 1.8 - 10.0, 2), 0.3)})
 
         # stepNumber, distance = lidar.getData()
         # while stepNumber <> 0:
@@ -37,49 +37,44 @@ class ObjectDetection(threading.Thread):
 
         # print '### Step is at 0 now ###'
 
+        minStepDist = [290,290,290,290,290,290,290,290,291,291,292,294,295,297,300,271,241,217,197,180,166,154,144,135,128,121,115,109,104,100,96,92,89,86,83,81,79,77,75,73,71,70,69,67,66,65,64,64,63,62,62,61,61,61,60,60,60,60,60,60,60,61,61,61,62,62,63,64,64,65,66,67,69,70,71,73,75,77,79,81,83,86,89,92,96,100,104,109,115,121,128,135,144,154,166,180,224,224,224]
+        maxStepDist = [450,450,470,500,600,600,610,620,610,610,600,590,590,570,560,560,560,560,560,560,560,560,550,540,540,540,540,540,550,550,570,560,560,560,550,550,550,540,550,540,550,560,540,530,530,530,520,500,490,500,510,500,490,490,500,500,500,500,490,480,480,480,470,470,460,460,430,420,420,400,400,400,400,390,390,390,390,390,390,400,410,420,430,450,440,440,440,450,460,470,510,520,520,530,530,530,530,530,530]
+
+
         lidar.resetDataCount()
 
-        values = pickle.load(open("/Users/max/Documents/code/me310-audi-enlight/lidar/scan6MinimumValues", "rb" ))
+        # values = pickle.load(open("/home/pi/me310-audi-enlight/lidar/scan6MinimumValues", "rb" ))
 
-        print '### MIN ###'
-        print map(np.min, values)
-        print '### MAX ###'
-        print map(np.max, values)
-        print '### STD ###'
-        print map(np.std, values)
-        print '###########'
+        # print '### MIN ###'
+        # print map(np.min, values)
+        # print '### MAX ###'
+        # print map(np.max, values)
+        # print '### STD ###'
+        # print map(np.std, values)
+        # print '###########'
 
-        stdValues = map(np.std, values)
-        minValues = map(np.min, values)
-
-        spot = None
-
-        # stepNumber, distance = 50, 200
-        # location = ObjectLocation(stepNumber * 1.8, distance / 100)
-        # spot = LEDSpot(Color_People, location, 2)
-        # get_led_controller().add_symbol(spot)
+        # stdValues = map(np.std, values)
+        # minValues = map(np.min, values)
 
         while not self.stopped:
             stepNumber, distance = lidar.getData()
-            # stepNumber, distance = 50, 200
-            # time.sleep(0.01)
-            if stepNumber == 55:
+            if stepNumber == -1:
                 continue
-            if abs(minValues[stepNumber] - distance) > 50:
-                if stdValues[stepNumber] < 40:
-                    # spots[stepNumber].color = Color_People
-                    if (not spots[stepNumber]['active']):
-                        get_led_controller().add_symbol(spots[stepNumber]['spot'])
-                        spots[stepNumber]['active'] = True
 
-                        # print datetime.now(), "Detected object at angle %f with a distance of %i" % (stepNumber * 1.8, distance)
+            if distance >= maxStepDist[stepNumber] or distance <= minStepDist[stepNumber]:
+                if (spots[stepNumber]['active']):
+                    get_led_controller().remove_symbol(spots[stepNumber]['spot'])
+                    spots[stepNumber]['active'] = False
             else:
-                pass
-                get_led_controller().remove_symbol(spots[stepNumber]['spot'])
-                # if spots[stepNumber]['active']:
-                #     print datetime.now(), "Remove object at angle %f" % (stepNumber*1.8,)
-                spots[stepNumber]['active'] = False
-                # spots[stepNumber]['spot'].color = Color_None
+
+                if maxStepDist[stepNumber] - distance > 50:
+                        if (not spots[stepNumber]['active']):
+                            get_led_controller().add_symbol(spots[stepNumber]['spot'])
+                            spots[stepNumber]['active'] = True
+                else:
+                    if (spots[stepNumber]['active']):
+                        get_led_controller().remove_symbol(spots[stepNumber]['spot'])
+                        spots[stepNumber]['active'] = False
 
         for spot in spots:
             get_led_controller().remove_symbol(spot['spot'])
